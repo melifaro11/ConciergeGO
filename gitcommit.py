@@ -32,7 +32,7 @@ def gen_comment(diff_text: str) -> str:
 
     return response.strip()
 
-def git_commit_and_push(commit_message):
+def git_commit(commit_message):
     """
     Run git commit/push
     """
@@ -49,6 +49,9 @@ def git_commit_and_push(commit_message):
 
     print(commit_result.stdout)
 
+    return True
+
+def git_push():
     push_result = subprocess.run(
         ["git", "push"],
         capture_output=True,
@@ -72,9 +75,11 @@ def main():
 
     commit_message = gen_comment(diff_text)
 
-    if input(f"{commit_message}\nContinue with commit/push? (y/n): ").strip().lower() == 'y':
-        if git_commit_and_push(commit_message):
-            print("Successfully done")
+    if input(f"{commit_message}\nContinue with commit? (y/n): ").strip().lower() == 'y':
+        if git_commit(commit_message):
+            if input("Continue with push? (y/n): ").strip().lower() == 'y':
+                git_push()
+                print("Done")
 
 if __name__ == "__main__":
     main()
