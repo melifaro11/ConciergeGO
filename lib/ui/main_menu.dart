@@ -1,10 +1,10 @@
 import 'package:conciergego/bloc/auth_bloc.dart';
 import 'package:conciergego/bloc/events/auth_event.dart';
-import 'package:conciergego/bloc/events/settings_event.dart';
-import 'package:conciergego/bloc/settings_bloc.dart';
-import 'package:conciergego/bloc/states/settings_state.dart';
-import 'package:conciergego/models/settings_model.dart';
-import 'package:conciergego/ui/screens/settings_screen.dart';
+import 'package:conciergego/bloc/events/user_profile_event.dart';
+import 'package:conciergego/bloc/user_profile_bloc.dart';
+import 'package:conciergego/bloc/states/user_profile_state.dart';
+import 'package:conciergego/models/user_profile_model.dart';
+import 'package:conciergego/ui/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,16 +17,17 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  SettingsModel? _settings;
+  UserProfileModel? _userProfile;
 
   @override
   Widget build(BuildContext context) {
-    final SettingsState settingsState = context.watch<SettingsBloc>().state;
+    final UserProfileState userProfileState =
+        context.watch<UserProfileBloc>().state;
 
-    if (settingsState is SettingsInitialState) {
-      BlocProvider.of<SettingsBloc>(context).add(LoadUserSettingsEvent());
-    } else if (settingsState is SettingsLoadedState) {
-      _settings = settingsState.settings;
+    if (userProfileState is UserProfileInitialState) {
+      BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
+    } else if (userProfileState is UserProfileLoadedState) {
+      _userProfile = userProfileState.userProfile;
     }
 
     return Drawer(
@@ -37,7 +38,9 @@ class _MainMenuState extends State<MainMenu> {
               color: Theme.of(context).colorScheme.primary,
             ),
             accountName: Text(
-              _settings?.userName != null ? _settings!.userName! : "anonymous",
+              _userProfile?.userName != null
+                  ? _userProfile!.userName!
+                  : "anonymous",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).secondaryHeaderColor,
                 fontWeight: FontWeight.bold,
@@ -51,10 +54,10 @@ class _MainMenuState extends State<MainMenu> {
                 );
 
                 pickedFile?.readAsBytes().then((imageData) {
-                  if (_settings != null) {
-                    context.read<SettingsBloc>().add(
-                      SettingsUpdateEvent(
-                        _settings!.copyWith(avatar: imageData),
+                  if (_userProfile != null) {
+                    context.read<UserProfileBloc>().add(
+                      UserProfileUpdateEvent(
+                        _userProfile!.copyWith(avatar: imageData),
                       ),
                     );
                   }
@@ -62,23 +65,23 @@ class _MainMenuState extends State<MainMenu> {
               },
               child: CircleAvatar(
                 backgroundImage:
-                    _settings?.avatar != null
-                        ? Image.memory(_settings!.avatar!).image
+                    _userProfile?.avatar != null
+                        ? Image.memory(_userProfile!.avatar!).image
                         : null,
                 child:
-                    _settings?.avatar != null
+                    _userProfile?.avatar != null
                         ? null
                         : const FlutterLogo(size: 42),
               ),
             ),
           ),
           //const Divider(),
-          if (settingsState is SettingsLoadedState)
+          if (userProfileState is UserProfileLoadedState)
             ListTile(
-              title: const Text("Settings"),
-              leading: const Icon(Icons.settings),
+              title: const Text("My profile"),
+              leading: const Icon(Icons.person),
               onTap: () {
-                Navigator.popAndPushNamed(context, SettingsScreen.routeName);
+                Navigator.popAndPushNamed(context, UserProfileScreen.routeName);
               },
             ),
           ListTile(

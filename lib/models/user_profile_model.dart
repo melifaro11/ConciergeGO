@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-/// Settings model
-class SettingsModel {
+/// UserProfile model
+class UserProfileModel {
   final String? id;
 
   final String? userName;
@@ -13,20 +13,20 @@ class SettingsModel {
 
   final bool darkTheme;
 
-  SettingsModel(
+  UserProfileModel(
       {required this.id,
       required this.userName,
       required this.avatar,
       required this.openaiKey,
       required this.darkTheme});
 
-  SettingsModel copyWith(
+  UserProfileModel copyWith(
       {String? id,
       String? userName,
       Uint8List? avatar,
       String? openaiKey,
       bool? darkTheme}) {
-    return SettingsModel(
+    return UserProfileModel(
       id: id ?? this.id,
       userName: userName ?? this.userName,
       avatar: avatar ?? this.avatar,
@@ -35,8 +35,8 @@ class SettingsModel {
     );
   }
 
-  factory SettingsModel.fromJson(String id, Map<String, dynamic> json) {
-    return SettingsModel(
+  factory UserProfileModel.fromJson(String id, Map<String, dynamic> json) {
+    return UserProfileModel(
       id: id,
       userName: json['userName'],
       avatar: json['avatar'] != null ? base64Decode(json['avatar']) : null,

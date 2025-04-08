@@ -1,13 +1,13 @@
 import 'dart:ui';
 
 import 'package:conciergego/bloc/auth_bloc.dart';
-import 'package:conciergego/bloc/settings_bloc.dart';
-import 'package:conciergego/bloc/states/settings_state.dart';
+import 'package:conciergego/bloc/user_profile_bloc.dart';
+import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/firebase_options.dart';
 import 'package:conciergego/ui/screens/home_screen.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/screens/registration_screen.dart';
-import 'package:conciergego/ui/screens/settings_screen.dart';
+import 'package:conciergego/ui/screens/user_profile_screen.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
-        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()),
+        BlocProvider<UserProfileBloc>(create: (context) => UserProfileBloc()),
       ],
       child: const ConciergeGoApp(),
     ),
@@ -43,10 +43,10 @@ class ConciergeGoApp extends StatelessWidget {
   Widget build(BuildContext context) {
     var isDarkTheme = true;
 
-    final settingsState = context.watch<SettingsBloc>().state;
+    final settingsState = context.watch<UserProfileBloc>().state;
 
-    if (settingsState is SettingsLoadedState) {
-      isDarkTheme = settingsState.settings.darkTheme;
+    if (settingsState is UserProfileLoadedState) {
+      isDarkTheme = settingsState.userProfile.darkTheme;
     }
 
     return MaterialApp(
@@ -61,7 +61,7 @@ class ConciergeGoApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegistrationScreen.routeName: (context) => const RegistrationScreen(),
         HomeScreen.routeName: (context) => const HomeScreen(),
-        SettingsScreen.routeName: (context) => const SettingsScreen(),
+        UserProfileScreen.routeName: (context) => const UserProfileScreen(),
       },
     );
   }

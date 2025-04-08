@@ -1,26 +1,27 @@
 import 'dart:typed_data';
 
-import 'package:conciergego/bloc/events/settings_event.dart';
-import 'package:conciergego/bloc/settings_bloc.dart';
-import 'package:conciergego/bloc/states/settings_state.dart';
-import 'package:conciergego/models/settings_model.dart';
+import 'package:conciergego/bloc/events/user_profile_event.dart';
+import 'package:conciergego/bloc/user_profile_bloc.dart';
+import 'package:conciergego/bloc/states/user_profile_state.dart';
+import 'package:conciergego/main.dart';
+import 'package:conciergego/models/user_profile_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SettingsScreen extends StatefulWidget {
-  static const routeName = '/settings';
+class UserProfileScreen extends StatefulWidget {
+  static const routeName = '/user_profile';
 
-  const SettingsScreen({super.key});
+  const UserProfileScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  SettingsModel? _settings;
+class _UserProfileScreenState extends State<UserProfileScreen> {
+  UserProfileModel? _userProfile;
 
   Uint8List? _avatar;
 
@@ -32,20 +33,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
 
-    final SettingsState state = BlocProvider.of<SettingsBloc>(context).state;
+    final UserProfileState state =
+        BlocProvider.of<UserProfileBloc>(context).state;
 
-    if (state is SettingsLoadedState) {
-      _settings = state.settings;
-      _avatar = _settings?.avatar;
-      _nameController.text = _settings?.userName ?? "";
-      _openaiKeyController.text = _settings?.openaiKey ?? "";
+    if (state is UserProfileLoadedState) {
+      _userProfile = state.userProfile;
+      _avatar = _userProfile?.avatar;
+      _nameController.text = _userProfile?.userName ?? "";
+      _openaiKeyController.text = _userProfile?.openaiKey ?? "";
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Settings")),
+      appBar: AppBar(
+        title: Row(children: [SizedBox(width: 25), const Text("Profile")]),
+        automaticallyImplyLeading: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
         child: Column(
@@ -68,15 +73,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
 
                   pickedFile?.readAsBytes().then((imageData) {
-                    if (_settings != null) {
-                      _settings = _settings!.copyWith(
+                    if (_userProfile != null) {
+                      _userProfile = _userProfile!.copyWith(
                         avatar: imageData,
                         userName: _nameController.text,
                         openaiKey: _openaiKeyController.text,
                       );
 
-                      context.read<SettingsBloc>().add(
-                        SettingsUpdateEvent(_settings!),
+                      context.read<UserProfileBloc>().add(
+                        UserProfileUpdateEvent(_userProfile!),
                       );
 
                       setState(() {
@@ -135,21 +140,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   width: 170,
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_settings != null) {
-                        BlocProvider.of<SettingsBloc>(context).add(
-                          SettingsUpdateEvent(
-                            _settings!.copyWith(
+                      if (_userProfile != null) {
+                        BlocProvider.of<UserProfileBloc>(context).add(
+                          UserProfileUpdateEvent(
+                            _userProfile!.copyWith(
                               userName: _nameController.text,
                               openaiKey: _openaiKeyController.text,
                             ),
                           ),
                         );
+                        navigatorKey.currentState!.pop();
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Changes saved")),
+                          const SnackBar(content: Text("Profile saved")),
                         );
                       }
                     },
-                    child: const Text("Save settings"),
+                    child: const Text("Save profile"),
                   ),
                 ),
               ],

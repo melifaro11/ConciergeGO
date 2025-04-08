@@ -1,15 +1,15 @@
 import 'dart:math';
 
 import 'package:conciergego/bloc/auth_bloc.dart';
-import 'package:conciergego/bloc/events/settings_event.dart';
-import 'package:conciergego/bloc/settings_bloc.dart';
+import 'package:conciergego/bloc/events/user_profile_event.dart';
+import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
-import 'package:conciergego/bloc/states/settings_state.dart';
+import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/main.dart';
 import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/main_menu.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
-import 'package:conciergego/ui/screens/settings_screen.dart';
+import 'package:conciergego/ui/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -41,13 +41,13 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     //var isDarkTheme = true;
-    final settingsState = context.watch<SettingsBloc>().state;
+    final settingsState = context.watch<UserProfileBloc>().state;
 
-    if (settingsState is SettingsInitialState) {
-      BlocProvider.of<SettingsBloc>(context).add(LoadUserSettingsEvent());
-    } else if (settingsState is SettingsLoadedState) {
-      isDarkTheme = settingsState.settings.darkTheme;
-      OpenAIService().init(settingsState.settings.openaiKey);
+    if (settingsState is UserProfileInitialState) {
+      BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
+    } else if (settingsState is UserProfileLoadedState) {
+      isDarkTheme = settingsState.userProfile.darkTheme;
+      OpenAIService().init(settingsState.userProfile.openaiKey);
     }
 
     context.watch<AuthBloc>().stream.listen((event) {
@@ -56,7 +56,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     });
 
-    if (settingsState is SettingsInitialState) {
+    if (settingsState is UserProfileInitialState) {
       return Scaffold(
         appBar: AppBar(),
         body: Center(
@@ -83,8 +83,8 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ),
         ),
       );
-    } else if (settingsState is SettingsLoadedState &&
-        settingsState.settings.openaiKey.isNotEmpty) {
+    } else if (settingsState is UserProfileLoadedState &&
+        settingsState.userProfile.openaiKey.isNotEmpty) {
       return Scaffold(
         appBar: AppBar(
           title: const Text("ConciergeGO"),
@@ -92,7 +92,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             Switch(
               value: isDarkTheme,
               onChanged: (value) {
-                BlocProvider.of<SettingsBloc>(
+                BlocProvider.of<UserProfileBloc>(
                   context,
                 ).add(ThemeChangeEvent(value));
               },
@@ -103,67 +103,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         body: Center(child: Text("EMPTY")),
       );
     } else {
-      return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Text(
-                "ConciergeGO",
-                style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              ),
-              const SizedBox(width: 20),
-            ],
-          ),
-          actions: [
-            Switch(
-              value: isDarkTheme,
-              onChanged: (value) {
-                BlocProvider.of<SettingsBloc>(
-                  context,
-                ).add(ThemeChangeEvent(value));
-              },
-            ),
-          ],
-        ),
-        drawer: const MainMenu(),
-        body: Padding(
-          padding: const EdgeInsets.all(35),
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset('assets/images/api_key.png', width: 100),
-                const SizedBox(height: 20),
-                Text(
-                  "There is no OpenAI API-Key provided.\n\n"
-                  "Please specify the API-Key in the settings",
-                  style: Theme.of(context).textTheme.titleLarge,
-                  maxLines: 4,
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 30),
-                SizedBox(
-                  width: 200,
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, SettingsScreen.routeName);
-                    },
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.settings),
-                        SizedBox(width: 10),
-                        Text("Open settings"),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
+      return UserProfileScreen();
     }
   }
 }
