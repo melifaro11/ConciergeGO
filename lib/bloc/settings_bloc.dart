@@ -5,8 +5,8 @@ import 'package:conciergego/bloc/states/settings_state.dart';
 import 'package:conciergego/models/settings_model.dart';
 import 'package:conciergego/services/firestore/firestore_service.dart';
 import 'package:conciergego/services/firestore/firestore_settings.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final SettingsFirestoreService _fireStore = SettingsFirestoreService();
@@ -21,21 +21,29 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   void _onSettingsStreamUpdateEvent(
-      SettingsStreamUpdateEvent event, Emitter<SettingsState> emitter) async {
+    SettingsStreamUpdateEvent event,
+    Emitter<SettingsState> emitter,
+  ) async {
     emitter(SettingsLoadedState(settings: event.settings));
   }
 
   void _onThemeChangeEvent(
-      ThemeChangeEvent event, Emitter<SettingsState> emitter) {
+    ThemeChangeEvent event,
+    Emitter<SettingsState> emitter,
+  ) {
     if (state is SettingsLoadedState) {
-      _fireStore.updateSettings((state as SettingsLoadedState)
-          .settings
-          .copyWith(darkTheme: event.darkTheme));
+      _fireStore.updateSettings(
+        (state as SettingsLoadedState).settings.copyWith(
+          darkTheme: event.darkTheme,
+        ),
+      );
     }
   }
 
   void _onLoadUserSettingsEvent(
-      LoadUserSettingsEvent event, Emitter<SettingsState> emitter) async {
+    LoadUserSettingsEvent event,
+    Emitter<SettingsState> emitter,
+  ) async {
     try {
       _settingsSubscription?.cancel();
       _settingsSubscription = _fireStore.getSettingsStream().listen((settings) {
@@ -47,7 +55,9 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   }
 
   void _onSettingsUpdateEvent(
-      SettingsUpdateEvent event, Emitter<SettingsState> emitter) async {
+    SettingsUpdateEvent event,
+    Emitter<SettingsState> emitter,
+  ) async {
     try {
       _fireStore.updateSettings(event.settings);
     } on FirestoreServiceException catch (e) {
