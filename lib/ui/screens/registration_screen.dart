@@ -75,12 +75,12 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   const SizedBox(height: 20),
                   TextFieldDecorated(
-                    label: "E-mail",
+                    labelText: "E-mail",
                     controller: _emailController,
                   ),
                   const SizedBox(height: 20),
                   TextFieldDecorated(
-                    label: "Password",
+                    labelText: "Password",
                     controller: _passwordController,
                     obscureText: true,
                   ),

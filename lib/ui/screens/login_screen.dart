@@ -82,14 +82,14 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       TextFieldDecorated(
-                        label: "E-mail",
+                        labelText: "E-mail",
                         controller: _emailController,
                         onSubmitted: (text) {
                           _submitLoginForm();
                         },
                       ),
                       TextFieldDecorated(
-                        label: "Password",
+                        labelText: "Password",
                         obscureText: true,
                         controller: _passwordController,
                         onSubmitted: (text) {

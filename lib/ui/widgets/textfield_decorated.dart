@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 /// Text input widget
 class TextFieldDecorated extends StatefulWidget {
   /// Input label
-  final String? label;
+  final String? labelText;
+
+  final String? hintText;
 
   /// Field controller
   final TextEditingController? controller;
@@ -14,16 +16,24 @@ class TextFieldDecorated extends StatefulWidget {
 
   final bool? enabled;
 
+  final double? width;
+
+  final double? height;
+
   final Function(String)? onSubmitted;
 
-  const TextFieldDecorated(
-      {super.key,
-      this.label,
-      this.controller,
-      this.enabled,
-      this.obscureText,
-      this.suffix,
-      this.onSubmitted});
+  const TextFieldDecorated({
+    super.key,
+    this.labelText,
+    this.hintText,
+    this.controller,
+    this.enabled,
+    this.obscureText,
+    this.suffix,
+    this.width,
+    this.height,
+    this.onSubmitted,
+  });
 
   @override
   State<TextFieldDecorated> createState() => _TextFieldDecoratedState();
@@ -33,6 +43,8 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: widget.width,
+      height: widget.height,
       decoration: BoxDecoration(
         // boxShadow: [
         //   BoxShadow(
@@ -54,13 +66,10 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
           }
         },
         decoration: InputDecoration(
-          labelText: widget.label ?? "",
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
+          labelText: widget.labelText,
+          hintText: widget.hintText,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           suffix: widget.suffix,
-          //filled: true,
-          //fillColor: Colors.white,
         ),
       ),
     );
