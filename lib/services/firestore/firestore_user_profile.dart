@@ -31,10 +31,12 @@ class UserProfileFirestoreService extends FirestoreService {
             } else {
               return UserProfileModel(
                 id: null,
-                userName: null,
+                //userName: null,
                 avatar: null,
                 openaiKey: "",
                 darkTheme: true,
+                baseInfo: UserBaseInfoModel(),
+                preferences: UserPreferencesModel(),
               );
             }
           });

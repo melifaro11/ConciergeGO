@@ -38,8 +38,8 @@ class _MainMenuState extends State<MainMenu> {
               color: Theme.of(context).colorScheme.primary,
             ),
             accountName: Text(
-              _userProfile?.userName != null
-                  ? _userProfile!.userName!
+              _userProfile?.baseInfo.fullName != null
+                  ? _userProfile!.baseInfo.fullName!
                   : "anonymous",
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: Theme.of(context).secondaryHeaderColor,

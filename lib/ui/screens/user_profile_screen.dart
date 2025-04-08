@@ -39,7 +39,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     if (state is UserProfileLoadedState) {
       _userProfile = state.userProfile;
       _avatar = _userProfile?.avatar;
-      _nameController.text = _userProfile?.userName ?? "";
+      _nameController.text = _userProfile?.baseInfo.fullName ?? "";
       _openaiKeyController.text = _userProfile?.openaiKey ?? "";
     }
   }
@@ -48,8 +48,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [SizedBox(width: 25), const Text("Profile")]),
-        automaticallyImplyLeading: false,
+        title: const Text("My Profile"),
+        //automaticallyImplyLeading: false,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
@@ -76,7 +76,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     if (_userProfile != null) {
                       _userProfile = _userProfile!.copyWith(
                         avatar: imageData,
-                        userName: _nameController.text,
+                        baseInfo: _userProfile!.baseInfo.copyWith(
+                          fullName: _nameController.text,
+                        ),
                         openaiKey: _openaiKeyController.text,
                       );
 
@@ -144,7 +146,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         BlocProvider.of<UserProfileBloc>(context).add(
                           UserProfileUpdateEvent(
                             _userProfile!.copyWith(
-                              userName: _nameController.text,
+                              baseInfo: _userProfile!.baseInfo.copyWith(
+                                fullName: _nameController.text,
+                              ),
                               openaiKey: _openaiKeyController.text,
                             ),
                           ),
