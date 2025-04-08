@@ -1,15 +1,19 @@
 import 'dart:typed_data';
 
+import 'package:conciergego/bloc/auth_bloc.dart';
 import 'package:conciergego/bloc/events/user_profile_event.dart';
+import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/main.dart';
 import 'package:conciergego/models/user_profile_model.dart';
+import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/widgets/textfield_decorated.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -62,6 +66,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<AuthBloc>().stream.listen((event) {
+      if (event is! AuthLoggedState) {
+        navigatorKey.currentState!.pushReplacementNamed(LoginScreen.routeName);
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Profile"),
@@ -128,14 +138,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 width: 400,
               ),
               const SizedBox(height: 20),
-              TextField(
-                controller: _phoneNumberController,
-                decoration: InputDecoration(
-                  labelText: "Phone number",
-                  hintText: "What is your phone number?",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+              SizedBox(
+                width: 400,
+                child: IntlPhoneField(
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    labelText: "Phone number",
+                    hintText: "What is your phone number?",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
+                  initialCountryCode: 'KG',
+                  onChanged: (phone) {},
                 ),
               ),
               const SizedBox(height: 20),
