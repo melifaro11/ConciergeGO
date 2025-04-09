@@ -3,8 +3,9 @@ import 'dart:ui';
 import 'package:conciergego/bloc/auth_bloc.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
+import 'package:conciergego/bloc/user_request_bloc.dart';
 import 'package:conciergego/firebase_options.dart';
-import 'package:conciergego/ui/screens/home_screen.dart';
+import 'package:conciergego/ui/screens/main_screen.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/screens/registration_screen.dart';
 import 'package:conciergego/ui/screens/user_profile_screen.dart';
@@ -19,7 +20,6 @@ final lightTheme = ThemeData.light(useMaterial3: true);
 
 final darkTheme = ThemeData.dark(useMaterial3: true);
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OpenAI.showLogs = true;
@@ -31,6 +31,7 @@ void main() async {
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
         BlocProvider<UserProfileBloc>(create: (context) => UserProfileBloc()),
+        BlocProvider<UserRequestBloc>(create: (context) => UserRequestBloc()),
       ],
       child: const ConciergeGoApp(),
     ),
@@ -61,7 +62,7 @@ class ConciergeGoApp extends StatelessWidget {
       routes: {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegistrationScreen.routeName: (context) => const RegistrationScreen(),
-        HomeScreen.routeName: (context) => const HomeScreen(),
+        MainScreen.routeName: (context) => const MainScreen(),
         UserProfileScreen.routeName: (context) => const UserProfileScreen(),
       },
     );

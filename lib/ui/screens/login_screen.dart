@@ -4,7 +4,7 @@ import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/main.dart';
-import 'package:conciergego/ui/screens/home_screen.dart';
+import 'package:conciergego/ui/screens/main_screen.dart';
 import 'package:conciergego/ui/screens/registration_screen.dart';
 import 'package:conciergego/ui/widgets/textfield_decorated.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         if (state is AuthLoggedState) {
           BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
-          navigatorKey.currentState!.pushReplacementNamed(HomeScreen.routeName);
+          navigatorKey.currentState!.pushReplacementNamed(MainScreen.routeName);
         }
       },
       builder: (context, state) {

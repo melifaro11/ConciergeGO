@@ -53,7 +53,7 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
         controller: widget.controller,
         obscureText: widget.obscureText ?? false,
         enabled: widget.enabled ?? true,
-        maxLines: widget.maxLines,
+        maxLines: widget.obscureText != null ? 1 : widget.maxLines,
         onSubmitted: (text) {
           if (widget.onSubmitted != null) {
             widget.onSubmitted!(text);

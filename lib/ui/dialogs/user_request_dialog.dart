@@ -44,13 +44,13 @@ class __FloatingDialogContentState extends State<_FloatingDialogContent> {
       backgroundColor: Colors.transparent,
       elevation: 0,
       child: Container(
-        padding: const EdgeInsets.all(24),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),
@@ -63,7 +63,7 @@ class __FloatingDialogContentState extends State<_FloatingDialogContent> {
             TextFieldDecorated(
               controller: _textController,
               hintText: "Describe your request...",
-              maxLines: 4,
+              maxLines: 6,
             ),
             const SizedBox(height: 20),
             Row(
