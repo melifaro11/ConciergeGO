@@ -11,6 +11,14 @@ class UserRequestCreatedState extends UserRequestState {
   UserRequestCreatedState(this.request);
 }
 
+class UserRequestCompletedState extends UserRequestState {
+  final String request;
+
+  final String llmResponse;
+
+  UserRequestCompletedState({required this.request, required this.llmResponse});
+}
+
 class UserRequestErrorState extends UserRequestState {
   final String message;
 

@@ -8,7 +8,7 @@ import 'package:conciergego/firebase_options.dart';
 import 'package:conciergego/ui/screens/main_screen.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/screens/registration_screen.dart';
-import 'package:conciergego/ui/screens/user_profile_screen.dart';
+import 'package:conciergego/ui/screens/user_profile_edit_screen.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,7 @@ class ConciergeGoApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegistrationScreen.routeName: (context) => const RegistrationScreen(),
         MainScreen.routeName: (context) => const MainScreen(),
-        UserProfileScreen.routeName: (context) => const UserProfileScreen(),
+        UserProfileEditScreen.routeName: (context) => const UserProfileEditScreen(),
       },
     );
   }

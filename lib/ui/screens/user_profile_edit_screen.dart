@@ -16,16 +16,16 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  static const routeName = '/user_profile';
+class UserProfileEditScreen extends StatefulWidget {
+  static const routeName = '/user_profile_edit';
 
-  const UserProfileScreen({super.key});
+  const UserProfileEditScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() => _UserProfileScreenState();
+  State<UserProfileEditScreen> createState() => _UserProfileEditScreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
+class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
   UserProfileModel? _userProfile;
 
   Uint8List? _avatar;
@@ -72,6 +72,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       }
     });
 
+    final UserProfileBloc userProfileBloc = BlocProvider.of<UserProfileBloc>(
+      context,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("My Profile"),
@@ -110,7 +114,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           openaiKey: _openaiKeyController.text,
                         );
 
-                        context.read<UserProfileBloc>().add(
+                        userProfileBloc.add(
                           UserProfileUpdateEvent(_userProfile!),
                         );
 

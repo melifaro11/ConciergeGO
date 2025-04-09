@@ -8,7 +8,7 @@ import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/pages/loading_page.dart';
 import 'package:conciergego/ui/pages/request_page.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
-import 'package:conciergego/ui/screens/user_profile_screen.dart';
+import 'package:conciergego/ui/screens/user_profile_edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,9 +36,15 @@ class MainScreenState extends State<MainScreen> {
       if (state.userProfile.openaiKey.isNotEmpty) {
         OpenAIService().init(state.userProfile.openaiKey);
       } else {
-        navigatorKey.currentState!.pushNamed(UserProfileScreen.routeName);
+        navigatorKey.currentState!.pushNamed(UserProfileEditScreen.routeName);
       }
     }
+  }
+
+  @override
+  void disponse() {
+    debugPrint('MainScreen.dispose()');
+    super.dispose();
   }
 
   @override

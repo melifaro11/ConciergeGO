@@ -20,6 +20,10 @@ class TextFieldDecorated extends StatefulWidget {
 
   final int? maxLines;
 
+  final int? minLines;
+
+  final Widget? suffixIcon;
+
   final Function(String)? onSubmitted;
 
   const TextFieldDecorated({
@@ -33,6 +37,8 @@ class TextFieldDecorated extends StatefulWidget {
     this.width,
     this.height,
     this.maxLines,
+    this.minLines,
+    this.suffixIcon,
     this.onSubmitted,
   });
 
@@ -54,6 +60,7 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
         obscureText: widget.obscureText ?? false,
         enabled: widget.enabled ?? true,
         maxLines: widget.obscureText != null ? 1 : widget.maxLines,
+        minLines: widget.obscureText != null ? 1 : widget.minLines,
         onSubmitted: (text) {
           if (widget.onSubmitted != null) {
             widget.onSubmitted!(text);
@@ -64,6 +71,7 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
           hintText: widget.hintText,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
           suffix: widget.suffix,
+          suffixIcon: widget.suffixIcon,
         ),
       ),
     );

@@ -1,12 +1,22 @@
 import 'package:conciergego/bloc/events/user_request_event.dart';
 import 'package:conciergego/bloc/states/user_request_state.dart';
+import 'package:conciergego/models/user_profile_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
   UserRequestBloc() : super(UserRequestInitialState()) {
     on<UserRequestCreatedEvent>(_onUserRequestCreatedEvent);
+    on<UserRequestCancelledEvent>(_onUserRequestCancelledEvent);
   }
+
+  void _onUserRequestCancelledEvent(
+    UserRequestCancelledEvent event,
+    Emitter<UserRequestState> emitter,
+  ) {
+    emitter(UserRequestInitialState());
+  }
+
   void _onUserRequestCreatedEvent(
     UserRequestCreatedEvent event,
     Emitter<UserRequestState> emitter,
@@ -14,36 +24,50 @@ class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
     try {
       emitter(UserRequestCreatedState(event.request));
 
-      String profileStr = "";
-
-      profileStr +=
+      String profileStr =
           "Nationality: ${event.userProfile.baseInfo.nationality ?? "not specified"}\n";
-      profileStr +=
-          "Accommodation preference: ${event.userProfile.preferences.accommodationPreference ?? "not specified"}\n";
-      profileStr +=
-          "Destination transport preference: ${event.userProfile.preferences.destinationTransportPreference ?? "not specified"}\n";
-      profileStr +=
-          "Flight preference: ${event.userProfile.preferences.flightPreference ?? "not specified"}\n";
-      profileStr +=
-          "Frequent flyer memberships: ${event.userProfile.preferences.frequentFlyerMemberships ?? "not specified"}\n";
-      profileStr +=
-          "Hotel category preference: ${event.userProfile.preferences.hotelCategoryPreference ?? "not specified"}\n";
-      profileStr +=
-          "Hotel loyalty memberships: ${event.userProfile.preferences.hotelLoyaltyMemberships ?? "not specified"}\n";
-      profileStr +=
-          "Preferred airline and class: ${event.userProfile.preferences.preferredAirlineAndClass ?? "not specified"}\n";
-      profileStr +=
-          "Tour preference: ${event.userProfile.preferences.tourPreference ?? "not specified"}\n";
-      profileStr +=
-          "Travel companion: ${event.userProfile.preferences.travelCompanion ?? "not specified"}\n";
-      profileStr +=
-          "Traveler type: ${event.userProfile.preferences.travelerType ?? "not specified"}\n";
-      profileStr +=
-          "Travel frequency: ${event.userProfile.preferences.travelFrequency ?? "not specified"}\n";
+
+      profileStr += buildPreferences(event.userProfile.preferences);
 
       debugPrint("Profile data\n===============\n$profileStr");
+
+      emitter(
+        UserRequestCompletedState(
+          request: event.request,
+          llmResponse: "HIER IS LLM RESPONSE",
+        ),
+      );
     } catch (e) {
       emitter(UserRequestErrorState(e.toString()));
     }
+  }
+
+  String buildPreferences(UserPreferencesModel userPreferences) {
+    String preferences = "";
+
+    preferences +=
+        "Accommodation preference: ${userPreferences.accommodationPreference ?? "not specified"}\n";
+    preferences +=
+        "Destination transport preference: ${userPreferences.destinationTransportPreference ?? "not specified"}\n";
+    preferences +=
+        "Flight preference: ${userPreferences.flightPreference ?? "not specified"}\n";
+    preferences +=
+        "Frequent flyer memberships: ${userPreferences.frequentFlyerMemberships ?? "not specified"}\n";
+    preferences +=
+        "Hotel category preference: ${userPreferences.hotelCategoryPreference ?? "not specified"}\n";
+    preferences +=
+        "Hotel loyalty memberships: ${userPreferences.hotelLoyaltyMemberships ?? "not specified"}\n";
+    preferences +=
+        "Preferred airline and class: ${userPreferences.preferredAirlineAndClass ?? "not specified"}\n";
+    preferences +=
+        "Tour preference: ${userPreferences.tourPreference ?? "not specified"}\n";
+    preferences +=
+        "Travel companion: ${userPreferences.travelCompanion ?? "not specified"}\n";
+    preferences +=
+        "Traveler type: ${userPreferences.travelerType ?? "not specified"}\n";
+    preferences +=
+        "Travel frequency: ${userPreferences.travelFrequency ?? "not specified"}\n";
+
+    return preferences;
   }
 }

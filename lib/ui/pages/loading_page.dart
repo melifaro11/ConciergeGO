@@ -28,6 +28,8 @@ class _LoadingPageState extends State<LoadingPage>
     _controller.stop();
     _controller.dispose();
 
+    debugPrint("LoadingPage.dispose()");
+
     super.dispose();
   }
 
