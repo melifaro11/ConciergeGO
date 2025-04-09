@@ -19,6 +19,7 @@ final lightTheme = ThemeData.light(useMaterial3: true);
 
 final darkTheme = ThemeData.dark(useMaterial3: true);
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   OpenAI.showLogs = true;
