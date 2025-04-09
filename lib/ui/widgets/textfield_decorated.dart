@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 
 /// Text input widget
 class TextFieldDecorated extends StatefulWidget {
-  /// Input label
   final String? labelText;
 
   final String? hintText;
 
-  /// Field controller
   final TextEditingController? controller;
 
   final bool? obscureText;
@@ -19,6 +17,8 @@ class TextFieldDecorated extends StatefulWidget {
   final double? width;
 
   final double? height;
+
+  final int? maxLines;
 
   final Function(String)? onSubmitted;
 
@@ -32,6 +32,7 @@ class TextFieldDecorated extends StatefulWidget {
     this.suffix,
     this.width,
     this.height,
+    this.maxLines,
     this.onSubmitted,
   });
 
@@ -52,6 +53,7 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
         controller: widget.controller,
         obscureText: widget.obscureText ?? false,
         enabled: widget.enabled ?? true,
+        maxLines: widget.maxLines,
         onSubmitted: (text) {
           if (widget.onSubmitted != null) {
             widget.onSubmitted!(text);

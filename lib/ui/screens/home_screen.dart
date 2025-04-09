@@ -10,8 +10,10 @@ import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/main_menu.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/screens/user_profile_screen.dart';
+import 'package:conciergego/ui/widgets/elevated_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:conciergego/ui/dialogs/user_request_dialog.dart';
 
 /// Main screen
 class HomeScreen extends StatefulWidget {
@@ -103,7 +105,22 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ],
             ),
             drawer: const MainMenu(),
-            body: Center(child: Text("EMPTY")),
+            body: Padding(
+              padding: EdgeInsets.all(10),
+              child: Center(
+                child: ElevatedIconButton(
+                  width: 200,
+                  onPressed: () async {
+                    final result = await showUserRequestDialog(context);
+                        if (result != null) {
+                          debugPrint('User input: $result');
+                        }
+                  },
+                  icon: Icon(Icons.add),
+                  child: Text("Create request"),
+                ),
+              ),
+            ),
           );
         }
 
