@@ -23,9 +23,10 @@ def gen_comment(diff_text: str) -> str:
         return "No changes"
 
     chain = PromptTemplate.from_template(
-                    "Write a short, informative commit message for the following changes."
+                    "Write a short, generalized informative commit message for the following changes."
                     "Use English only, and the passive present (e.g., 'done', 'added', 'fixed')."
-                    "Don't use quotes. Limit yourself to 80-100 characters. Changes:\n\n{diff}"
+                    "Don't use quotes, reply ONLY with commit message."
+                    "Limit yourself to 80-100 characters. Changes:\n\n{diff}"
                 ) | OllamaLLM(model="llama3.2")
 
     response = chain.invoke({"diff": diff_text})
