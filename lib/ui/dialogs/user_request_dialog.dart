@@ -45,6 +45,7 @@ class __FloatingDialogContentState extends State<_FloatingDialogContent> {
       elevation: 0,
       child: Container(
         padding: const EdgeInsets.all(15),
+        width: MediaQuery.of(context).size.width * 0.7,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(20),
@@ -63,11 +64,11 @@ class __FloatingDialogContentState extends State<_FloatingDialogContent> {
             TextFieldDecorated(
               controller: _textController,
               hintText: "Describe your request...",
-              maxLines: 6,
+              maxLines: 8,
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedIconButton(
                   onPressed: () => Navigator.pop(context),
@@ -76,7 +77,8 @@ class __FloatingDialogContentState extends State<_FloatingDialogContent> {
                 const SizedBox(width: 10),
                 ElevatedIconButton(
                   onPressed: () => Navigator.pop(context, _textController.text),
-                  backgroundColor: Theme.of(context).primaryColor,
+                  width: 200,
+                  backgroundColor: Theme.of(context).primaryColor.withGreen(40),
                   child: const Text("Create request"),
                 ),
               ],

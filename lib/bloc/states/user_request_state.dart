@@ -11,12 +11,12 @@ class UserRequestCreatedState extends UserRequestState {
   UserRequestCreatedState(this.request);
 }
 
-class UserRequestCompletedState extends UserRequestState {
+class UserRequestQuestionsState extends UserRequestState {
   final String request;
 
-  final String llmResponse;
+  final List<String> questions;
 
-  UserRequestCompletedState({required this.request, required this.llmResponse});
+  UserRequestQuestionsState({required this.request, required this.questions});
 }
 
 class UserRequestErrorState extends UserRequestState {

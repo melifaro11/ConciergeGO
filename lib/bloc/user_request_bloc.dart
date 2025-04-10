@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:conciergego/bloc/events/user_request_event.dart';
 import 'package:conciergego/bloc/states/user_request_state.dart';
+import 'package:conciergego/models/chat_model.dart';
+import 'package:conciergego/models/questions_model.dart';
 import 'package:conciergego/models/user_profile_model.dart';
-import 'package:flutter/widgets.dart';
+import 'package:conciergego/services/openai_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
@@ -29,14 +33,36 @@ class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
 
       profileStr += buildPreferences(event.userProfile.preferences);
 
-      debugPrint("Profile data\n===============\n$profileStr");
+      OpenAIService()
+          .chatRequest(
+            messages: [MessageModel(content: event.request, role: "user")],
+            model: "gpt-4",
+            temperature: 0.3,
+            instructions:
+                " Analyze the user's request and profile. Your goal is to come"
+                " up with a list of questions that need to be clarified by"
+                " the user so that the performer can complete the tasks of"
+                " the request. Output the result in JSON format, creating"
+                " an array of questions 'questions'. Answer only JSON,"
+                " no additional text."
+                " User profile:\n\n$profileStr\n\nUser request:",
+          )
+          .then((llmResponse) {
+            try {
+              final QuestionsModel questionsModel = QuestionsModel.fromJson(
+                jsonDecode(llmResponse.content),
+              );
 
-      emitter(
-        UserRequestCompletedState(
-          request: event.request,
-          llmResponse: "HIER IS LLM RESPONSE",
-        ),
-      );
+              emitter(
+                UserRequestQuestionsState(
+                  request: event.request,
+                  questions: questionsModel.questions,
+                ),
+              );
+            } catch (e) {
+              emitter(UserRequestErrorState("Error parsing GPT response"));
+            }
+          });
     } catch (e) {
       emitter(UserRequestErrorState(e.toString()));
     }

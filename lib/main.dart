@@ -63,7 +63,8 @@ class ConciergeGoApp extends StatelessWidget {
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegistrationScreen.routeName: (context) => const RegistrationScreen(),
         MainScreen.routeName: (context) => const MainScreen(),
-        UserProfileEditScreen.routeName: (context) => const UserProfileEditScreen(),
+        UserProfileEditScreen.routeName:
+            (context) => const UserProfileEditScreen(),
       },
     );
   }

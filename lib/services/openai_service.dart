@@ -1,5 +1,6 @@
 import 'package:conciergego/models/chat_model.dart';
 import 'package:dart_openai/dart_openai.dart';
+import 'package:flutter/cupertino.dart';
 
 /// Service exception
 class OpenAIServiceException implements Exception {
@@ -24,6 +25,7 @@ class OpenAIService {
     OpenAI.requestsTimeOut = const Duration(seconds: 60);
     OpenAI.showLogs = true;
     OpenAI.showResponsesLogs = true;
+    debugPrint("OpenAI service initialized");
   }
 
   Future<MessageModel> chatRequest({

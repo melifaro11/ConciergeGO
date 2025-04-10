@@ -26,23 +26,10 @@ class MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-
-    final UserProfileState state =
-        BlocProvider.of<UserProfileBloc>(context).state;
-
-    if (state is UserProfileInitialState) {
-      BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
-    } else if (state is UserProfileLoadedState) {
-      if (state.userProfile.openaiKey.isNotEmpty) {
-        OpenAIService().init(state.userProfile.openaiKey);
-      } else {
-        navigatorKey.currentState!.pushNamed(UserProfileEditScreen.routeName);
-      }
-    }
   }
 
   @override
-  void disponse() {
+  void dispose() {
     debugPrint('MainScreen.dispose()');
     super.dispose();
   }
@@ -58,11 +45,18 @@ class MainScreenState extends State<MainScreen> {
     return BlocBuilder<UserProfileBloc, UserProfileState>(
       builder: (context, userProfileState) {
         if (userProfileState is UserProfileInitialState) {
+          BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
           return LoadingPage();
         } else if (userProfileState is UserProfileLoadedState) {
-          return RequestPage(
-            userProfileState: userProfileState,
-          );
+          if (userProfileState.userProfile.openaiKey.isNotEmpty) {
+            OpenAIService().init(userProfileState.userProfile.openaiKey);
+            debugPrint("OpenAI initialized");
+          } else {
+            navigatorKey.currentState!.pushNamed(
+              UserProfileEditScreen.routeName,
+            );
+          }
+          return RequestPage(userProfileState: userProfileState);
         }
 
         return Center(child: CircularProgressIndicator());
