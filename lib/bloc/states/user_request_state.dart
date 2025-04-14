@@ -19,6 +19,12 @@ class UserRequestQuestionsState extends UserRequestState {
   UserRequestQuestionsState({required this.request, required this.questions});
 }
 
+class UserRequestConfirmState extends UserRequestState {
+  final String request;
+
+  UserRequestConfirmState({required this.request});
+}
+
 class UserRequestErrorState extends UserRequestState {
   final String message;
 

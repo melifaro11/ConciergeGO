@@ -5,11 +5,11 @@ import 'package:conciergego/ui/widgets/textfield_decorated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<String?> showQuestionsListDialog(
+Future<List<String>?> showQuestionsListDialog(
   BuildContext context,
   List<String> questions,
 ) async {
-  return await showGeneralDialog<String>(
+  return await showGeneralDialog<List<String>>(
     context: context,
     barrierDismissible: true,
     barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -143,7 +143,10 @@ class _QuestionsListDialogContentState
                   ),
                   SizedBox(width: 25),
                   ElevatedIconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final answers = _questionControllers.map((controller) => controller.text).toList();
+                      Navigator.pop(context, answers);
+                    },
                     backgroundColor: Theme.of(
                       context,
                     ).primaryColor.withValues(green: 150, alpha: 0.4),

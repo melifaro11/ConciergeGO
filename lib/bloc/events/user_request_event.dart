@@ -12,6 +12,23 @@ class UserRequestCreatedEvent extends UserRequestEvent {
   UserRequestCreatedEvent({required this.request, required this.userProfile});
 }
 
+class UserRequestQuestionDoneEvent extends UserRequestEvent {
+  final String request;
+
+  final UserProfileModel userProfile;
+
+  final List<String> questions;
+
+  final List<String> answers;
+
+  UserRequestQuestionDoneEvent({
+    required this.request,
+    required this.userProfile,
+    required this.questions,
+    required this.answers,
+  });
+}
+
 class UserRequestCompletedEvent extends UserRequestEvent {
   final String request;
 
@@ -25,5 +42,7 @@ class UserRequestCompletedEvent extends UserRequestEvent {
     required this.llmResponse,
   });
 }
+
+class UserRequestDoneEvent extends UserRequestEvent {}
 
 class UserRequestCancelledEvent extends UserRequestEvent {}

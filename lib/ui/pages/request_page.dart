@@ -47,7 +47,19 @@ class _RequestPageState extends State<RequestPage> {
       body: BlocConsumer<UserRequestBloc, UserRequestState>(
         listener: (context, requestState) async {
           if (requestState is UserRequestQuestionsState) {
-            await showQuestionsListDialog(context, requestState.questions);
+            final result = await showQuestionsListDialog(context, requestState.questions);
+
+            if (result != null) {
+              debugPrint("Question answers: $result");
+              BlocProvider.of<UserRequestBloc>(context).add(
+                  UserRequestQuestionDoneEvent(
+                      request: requestState.request,
+                      userProfile: widget.userProfileState.userProfile,
+                      questions: requestState.questions,
+                      answers: result));
+            }
+          } else if (requestState is UserRequestConfirmState) {
+            // Confirm
           }
         },
         builder: (context, requestState) {
