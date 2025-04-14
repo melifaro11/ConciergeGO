@@ -11,6 +11,8 @@ class UserProfileModel {
 
   final bool darkTheme;
 
+  final int profileType;
+
   final UserBaseInfoModel baseInfo;
 
   final UserPreferencesModel preferences;
@@ -20,6 +22,7 @@ class UserProfileModel {
     required this.avatar,
     required this.openaiKey,
     required this.darkTheme,
+    required this.profileType,
     required this.baseInfo,
     required this.preferences,
   });
@@ -29,6 +32,7 @@ class UserProfileModel {
     Uint8List? avatar,
     String? openaiKey,
     bool? darkTheme,
+    int? profileType,
     UserBaseInfoModel? baseInfo,
     UserPreferencesModel? preferences,
   }) {
@@ -37,6 +41,7 @@ class UserProfileModel {
       avatar: avatar ?? this.avatar,
       openaiKey: openaiKey ?? this.openaiKey,
       darkTheme: darkTheme ?? this.darkTheme,
+      profileType: profileType ?? this.profileType,
       baseInfo: baseInfo ?? this.baseInfo,
       preferences: preferences ?? this.preferences,
     );
@@ -48,6 +53,7 @@ class UserProfileModel {
       avatar: json['avatar'] != null ? base64Decode(json['avatar']) : null,
       openaiKey: json['openaiKey'] ?? "",
       darkTheme: json['darkTheme'] ?? true,
+      profileType: json['profileType'] ?? 0,
       baseInfo: UserBaseInfoModel.fromJson(json),
       preferences: UserPreferencesModel.fromJson(json),
     );
@@ -55,11 +61,13 @@ class UserProfileModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'avatar': avatar != null ? base64Encode(avatar!.toList()) : null,
-      'openaiKey': openaiKey,
-      'darkTheme': darkTheme,
-    }..addAll(baseInfo.toJson())
-    ..addAll(preferences.toJson());
+        'avatar': avatar != null ? base64Encode(avatar!.toList()) : null,
+        'openaiKey': openaiKey,
+        'darkTheme': darkTheme,
+        'profileType': profileType,
+      }
+      ..addAll(baseInfo.toJson())
+      ..addAll(preferences.toJson());
   }
 }
 

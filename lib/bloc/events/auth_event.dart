@@ -16,7 +16,9 @@ class AuthRegisterUserEvent extends AuthEvent {
 
   final String password;
 
-  AuthRegisterUserEvent(this.email, this.password);
+  final int profileType;
+
+  AuthRegisterUserEvent(this.email, this.password, this.profileType);
 }
 
 class AuthSignOutEvent extends AuthEvent {}

@@ -24,6 +24,8 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   /// Password input controller
   final TextEditingController _passwordController = TextEditingController();
 
+  int _clientType = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +87,35 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Radio<int>(
+                        value: 0,
+                        groupValue: _clientType,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _clientType = value ?? 0;
+                            debugPrint("Client type: $_clientType");
+                          });
+                        },
+                      ),
+                      const Text("Customer"),
+                      const SizedBox(width: 30),
+                      Radio<int>(
+                        value: 1,
+                        groupValue: _clientType,
+                        onChanged: (int? value) {
+                          setState(() {
+                            _clientType = value ?? 0;
+                            debugPrint("Client type: $_clientType");
+                          });
+                        },
+                      ),
+                      const Text("Concierge"),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
                   SizedBox(
                     width: 170,
                     height: 40,
@@ -94,6 +125,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                           AuthRegisterUserEvent(
                             _emailController.text,
                             _passwordController.text,
+                            _clientType,
                           ),
                         );
                       },

@@ -31,10 +31,10 @@ class UserProfileFirestoreService extends FirestoreService {
             } else {
               return UserProfileModel(
                 id: null,
-                //userName: null,
                 avatar: null,
                 openaiKey: "",
                 darkTheme: true,
+                profileType: 0,
                 baseInfo: UserBaseInfoModel(),
                 preferences: UserPreferencesModel(),
               );
@@ -45,6 +45,15 @@ class UserProfileFirestoreService extends FirestoreService {
         "Get settings stream exception: ${e.toString()}",
       );
     }
+  }
+
+  Future<void> createNewUserProfile(UserProfileModel userProfile) async {
+    await firestore
+        .collection('users')
+        .doc(userProfile.id)
+        .collection('profile')
+        .doc('profile')
+        .set(userProfile.toJson());
   }
 
   /// Update assistant model

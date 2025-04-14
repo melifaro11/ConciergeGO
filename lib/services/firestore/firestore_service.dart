@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 const String userNotLoggedException = "User is not logged";
 
 /// Exception class for database service
@@ -15,8 +16,6 @@ class FirestoreService {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  FirestoreService();
 
   /// Returns logged user or throws the FirestoreServiceException, if user is not logged in
   User getLoggedUser() {
