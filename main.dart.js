@@ -42296,7 +42296,7 @@ q=3
 j=$.axa()
 i=A.b([new A.lc(n,"user")],t.LH)
 s=6
-return A.L(j.ue(" Build an ad text to complete a task based on the user's request, their profile, and additional information. The ad should include a general description of the task and individual points with detailed information about what needs to be done. Send only the ad text in the response. User profile:\n"+A.j(n),i,"gpt-4",0.2),$async$y9)
+return A.L(j.ue(" You are an assistant of the service for tourists and foreigners. Your goal is to analyze the client's request, their profile and additional information, and to write a request document for the performer. The request should list all tasks point by point, indicating information important for a specific task (indication of time, place, etc.). Use formal language. In the response, send only the request document. User profile:\n"+A.j(n),i,"gpt-4",0.2),$async$y9)
 case 6:m=d
 i=m.a
 if(!b.d)b.a.$1(new A.Ey(i))
