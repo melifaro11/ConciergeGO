@@ -6,18 +6,19 @@ import 'package:conciergego/services/firestore/firestore_user_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final AuthService _authService = AuthService();
-
-  AuthBloc() : super(AuthInitialState()) {
+  AuthBloc() : super(_getInitialState()) {
     on<AuthEmailLoginEvent>(_onAuthEmailLoginEvent);
     on<AuthRegisterUserEvent>(_onRegisterUserEvent);
     on<AuthSignOutEvent>(_onAuthSignOutEvent);
+  }
 
-    if (_authService.getLoggedUser() != null) {
-      emit(AuthLoggedState(_authService.getLoggedUser()!));
-    }
+  static AuthState _getInitialState() {
+    final loggedUser = AuthService().getLoggedUser();
+
+    return loggedUser != null
+        ? AuthLoggedState(loggedUser)
+        : AuthInitialState();
   }
 
   void _onAuthEmailLoginEvent(
@@ -27,7 +28,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emitter(AuthLoggingState());
 
-      var credential = await _authService.signInWithEmailPassword(
+      var credential = await AuthService().signInWithEmailPassword(
         event.email,
         event.password,
       );
@@ -45,20 +46,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emitter,
   ) async {
     try {
-      await _authService.signOut();
+      await AuthService().signOut();
       emitter(AuthInitialState());
     } catch (e) {
       emitter(AuthErrorState(e.toString()));
     }
   }
 
-  /// Register new user
   void _onRegisterUserEvent(
     AuthRegisterUserEvent event,
     Emitter<AuthState> emitter,
   ) async {
     try {
-      final userCredentials = await _authService.registerWithEmailPassword(
+      final userCredentials = await AuthService().registerWithEmailPassword(
         event.email,
         event.password,
       );
@@ -68,7 +68,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           UserProfileModel(
             id: userCredentials.user!.uid,
             avatar: null,
-            openaiKey: "",
             darkTheme: true,
             profileType: event.profileType,
             baseInfo: UserBaseInfoModel(),

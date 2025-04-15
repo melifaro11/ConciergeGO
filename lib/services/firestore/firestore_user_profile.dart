@@ -48,7 +48,6 @@ class UserProfileFirestoreService extends FirestoreService {
           return UserProfileModel(
             id: null,
             avatar: null,
-            openaiKey: "",
             darkTheme: true,
             profileType: 0,
             baseInfo: UserBaseInfoModel(),

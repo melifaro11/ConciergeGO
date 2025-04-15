@@ -105,12 +105,13 @@ class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
         model: "gpt-4",
         temperature: 0.2,
         instructions:
-            " Analyze the user's request and profile. Your goal is to come"
-            " up with a list of questions that need to be clarified by"
-            " the user so that the performer can complete the tasks of"
-            " the request. In case of travel, it is necessary to have"
-            " information about the place, date/time, budget. Output"
-            " the result in JSON format, creating an array of questions"
+            " You are an assistant of the service for tourists and foreigners."
+            " Your goal is to analyze the client's request and make a list"
+            " of questions to clarify the details necessary to fulfill"
+            " the request. Check user profile to obtain additional information."
+            " Ask only the most necessary questions necessary"
+            " to find out the time (terms), location, budget, etc."
+            " Output the result in JSON format, creating an array of questions"
             " 'questions'. Answer only JSON, no additional text."
             " User profile:\n\n$profileStr",
       );

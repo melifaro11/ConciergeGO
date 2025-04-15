@@ -49,12 +49,6 @@ class MainScreenState extends State<MainScreen> {
                   context,
                 ).pushNamed(UserProfileEditScreen.routeName);
               });
-              //const openAiKey = String.fromEnvironment('OPENAI_API_KEY');
-              //debugPrint("OPENAI KEY: $openAiKey");
-              //OpenAIService().init(userProfileState.userProfile.openaiKey);
-              //debugPrint("OpenAI initialized");
-            } else {
-
             }
             return RequestPage(userProfileState: userProfileState);
           }

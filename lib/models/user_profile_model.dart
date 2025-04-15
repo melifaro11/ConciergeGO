@@ -7,8 +7,6 @@ class UserProfileModel {
 
   final Uint8List? avatar;
 
-  final String openaiKey;
-
   final bool darkTheme;
 
   final int profileType;
@@ -20,7 +18,6 @@ class UserProfileModel {
   UserProfileModel({
     required this.id,
     required this.avatar,
-    required this.openaiKey,
     required this.darkTheme,
     required this.profileType,
     required this.baseInfo,
@@ -39,7 +36,6 @@ class UserProfileModel {
     return UserProfileModel(
       id: id ?? this.id,
       avatar: avatar ?? this.avatar,
-      openaiKey: openaiKey ?? this.openaiKey,
       darkTheme: darkTheme ?? this.darkTheme,
       profileType: profileType ?? this.profileType,
       baseInfo: baseInfo ?? this.baseInfo,
@@ -51,7 +47,6 @@ class UserProfileModel {
     return UserProfileModel(
       id: id,
       avatar: json['avatar'] != null ? base64Decode(json['avatar']) : null,
-      openaiKey: json['openaiKey'] ?? "",
       darkTheme: json['darkTheme'] ?? true,
       profileType: json['profileType'] ?? 0,
       baseInfo: UserBaseInfoModel.fromJson(json),
@@ -62,7 +57,6 @@ class UserProfileModel {
   Map<String, dynamic> toJson() {
     return {
         'avatar': avatar != null ? base64Encode(avatar!.toList()) : null,
-        'openaiKey': openaiKey,
         'darkTheme': darkTheme,
         'profileType': profileType,
       }
