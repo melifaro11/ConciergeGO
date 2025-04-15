@@ -6,10 +6,11 @@ import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/bloc/user_request_bloc.dart';
 import 'package:conciergego/bloc/user_request_list_bloc.dart';
 import 'package:conciergego/firebase_options.dart';
+import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/screens/main_screen.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/screens/registration_screen.dart';
-import 'package:conciergego/ui/screens/user_profile_edit_screen.dart';
+import 'package:conciergego/ui/screens/edit_user_profile_screen.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,9 @@ final darkTheme = ThemeData.dark(useMaterial3: true);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   OpenAI.showLogs = true;
+  OpenAIService().init(const String.fromEnvironment('OPENAI_API_KEY'));
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

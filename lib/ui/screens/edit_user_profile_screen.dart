@@ -5,8 +5,6 @@ import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
-import 'package:conciergego/main.dart';
-import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
 import 'package:conciergego/ui/widgets/textfield_decorated.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,8 +24,6 @@ class UserProfileEditScreen extends StatefulWidget {
 }
 
 class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
-  //UserProfileModel? _userProfile;
-
   Uint8List? _avatar;
 
   final TextEditingController _nameController = TextEditingController();
@@ -40,34 +36,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
       TextEditingController();
 
   final TextEditingController _nationalityController = TextEditingController();
-
-  final TextEditingController _openaiKeyController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    // final UserProfileState state =
-    //     BlocProvider.of<UserProfileBloc>(context).state;
-    //
-    // if (state is UserProfileLoadedState) {
-    //   _userProfile = state.userProfile;
-    //   _avatar = _userProfile?.avatar;
-    //   _nameController.text = _userProfile?.baseInfo.fullName ?? "";
-    //   _openaiKeyController.text = _userProfile?.openaiKey ?? "";
-    //
-    //   _nickNameController.text = _userProfile?.baseInfo.nickName ?? "";
-    //   _phoneNumberController.text = _userProfile?.baseInfo.phoneNumber ?? "";
-    //   _communicationMethodController.text =
-    //       _userProfile?.baseInfo.communicationMethod ?? "";
-    //   _nationalityController.text = _userProfile?.baseInfo.nationality ?? "";
-    // } else if (state is UserProfileInitialState) {
-    //   BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
-    //   debugPrint("Loading..");
-    // }
-    // debugPrint('AAAAFFFFFFFFFFFFFFFF');
-    // debugPrint(_userProfile.toString());
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +63,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
 
           _avatar = userProfile.avatar;
           _nameController.text = userProfile.baseInfo.fullName ?? "";
-          _openaiKeyController.text = userProfile.openaiKey ?? "";
 
           _nickNameController.text = userProfile.baseInfo.nickName ?? "";
           _phoneNumberController.text = userProfile.baseInfo.phoneNumber ?? "";
@@ -107,7 +74,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
             appBar: AppBar(
               title: const Text("My Profile"),
               automaticallyImplyLeading:
-                  userProfile.openaiKey.isNotEmpty ? true : false,
+                  userProfile.baseInfo.fullName != null ? true : false,
             ),
             body: SingleChildScrollView(
               child: Padding(
@@ -141,7 +108,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                               baseInfo: userProfile.baseInfo.copyWith(
                                 fullName: _nameController.text,
                               ),
-                              openaiKey: _openaiKeyController.text,
                             );
 
                             userProfileBloc.add(
@@ -211,20 +177,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    TextField(
-                      controller: _openaiKeyController,
-                      decoration: InputDecoration(
-                        labelText: "OpenAI key",
-                        error:
-                            _openaiKeyController.text.isEmpty
-                                ? Text("No API key provided")
-                                : null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -264,7 +216,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                           _communicationMethodController.text,
                                       nationality: _nationalityController.text,
                                     ),
-                                    openaiKey: _openaiKeyController.text,
                                   ),
                                 ),
                               );

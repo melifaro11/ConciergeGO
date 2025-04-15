@@ -5,7 +5,6 @@ import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/services/firestore/firestore_service.dart';
 import 'package:conciergego/services/firestore/firestore_user_profile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
@@ -24,7 +23,6 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     UserProfileStreamUpdateEvent event,
     Emitter<UserProfileState> emitter,
   ) async {
-    debugPrint("Emit profile loaded state");
     emitter(UserProfileLoadedState(userProfile: event.settings));
   }
 

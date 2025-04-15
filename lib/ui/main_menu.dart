@@ -4,7 +4,7 @@ import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/models/user_profile_model.dart';
-import 'package:conciergego/ui/screens/user_profile_edit_screen.dart';
+import 'package:conciergego/ui/screens/edit_user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';

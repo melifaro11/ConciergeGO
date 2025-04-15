@@ -3,11 +3,10 @@ import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
-import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/pages/loading_page.dart';
 import 'package:conciergego/ui/pages/request_page.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
-import 'package:conciergego/ui/screens/user_profile_edit_screen.dart';
+import 'package:conciergego/ui/screens/edit_user_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -44,15 +43,18 @@ class MainScreenState extends State<MainScreen> {
             ).add(LoadUserProfileEvent());
             return LoadingPage();
           } else if (userProfileState is UserProfileLoadedState) {
-            if (userProfileState.userProfile.openaiKey.isNotEmpty) {
-              OpenAIService().init(userProfileState.userProfile.openaiKey);
-              debugPrint("OpenAI initialized");
-            } else {
+            if (userProfileState.userProfile.baseInfo.fullName == null) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 Navigator.of(
                   context,
                 ).pushNamed(UserProfileEditScreen.routeName);
               });
+              //const openAiKey = String.fromEnvironment('OPENAI_API_KEY');
+              //debugPrint("OPENAI KEY: $openAiKey");
+              //OpenAIService().init(userProfileState.userProfile.openaiKey);
+              //debugPrint("OpenAI initialized");
+            } else {
+
             }
             return RequestPage(userProfileState: userProfileState);
           }
