@@ -2,7 +2,7 @@ import 'package:conciergego/models/request_model.dart';
 import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/services/firestore/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+
 
 /// Service to access settings in firestore
 class UserProfileFirestoreService extends FirestoreService {
@@ -46,7 +46,6 @@ class UserProfileFirestoreService extends FirestoreService {
           .snapshots()
           .map((snapshot) {
             if (snapshot.data() != null) {
-              debugPrint("USER ID: ${snapshot.id}");
               return UserProfileModel.fromJson(snapshot.id, snapshot.data()!);
             } else {
               return UserProfileModel(

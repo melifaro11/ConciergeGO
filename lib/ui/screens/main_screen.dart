@@ -1,4 +1,5 @@
 import 'package:conciergego/bloc/auth_bloc.dart';
+import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
@@ -38,6 +39,7 @@ class MainScreenState extends State<MainScreen> {
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         builder: (context, userProfileState) {
           if (userProfileState is UserProfileInitialState) {
+            BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
             return LoadingPage();
           } else if (userProfileState is UserProfileLoadedState) {
             if (userProfileState.userProfile.openaiKey.isNotEmpty) {

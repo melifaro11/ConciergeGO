@@ -95,16 +95,12 @@ class _RequestPageState extends State<RequestPage> {
                       const SizedBox(width: 15),
                       ElevatedIconButton(
                         onPressed: () {
-                          if (widget.userProfileState
-                              is UserProfileLoadedState) {
-                            userRequestBloc.add(
-                              UserRequestConfirmDoneEvent(
-                                userUid:
-                                    widget.userProfileState.userProfile.id!,
-                                request: requestState.request,
-                              ),
-                            );
-                          }
+                          userRequestBloc.add(
+                            UserRequestConfirmDoneEvent(
+                              userUid: widget.userProfileState.userProfile.id!,
+                              request: requestState.request,
+                            ),
+                          );
                         },
                         child: Text("Publish request"),
                       ),
@@ -135,6 +131,23 @@ class _RequestPageState extends State<RequestPage> {
                           ],
                         ),
                       ),
+                    ),
+                  if (requestState is UserRequestErrorState)
+                    Column(
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: Text(
+                            "OpenAI API error: ${requestState.message}",
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleMedium!.copyWith(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ElevatedIconButton(
                     width: 200,

@@ -96,7 +96,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         onChanged: (int? value) {
                           setState(() {
                             _clientType = value ?? 0;
-                            debugPrint("Client type: $_clientType");
                           });
                         },
                       ),
@@ -108,7 +107,6 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                         onChanged: (int? value) {
                           setState(() {
                             _clientType = value ?? 0;
-                            debugPrint("Client type: $_clientType");
                           });
                         },
                       ),
