@@ -18,6 +18,9 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class RegistrationScreenState extends State<RegistrationScreen> {
+  /// Full name
+  final _fullNameController = TextEditingController();
+
   /// E-mail input controller
   final TextEditingController _emailController = TextEditingController();
 
@@ -77,7 +80,14 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     ),
                   const SizedBox(height: 20),
                   TextFieldDecorated(
+                    labelText: "Full name",
+                    hintText: "What is your full name?",
+                    controller: _fullNameController,
+                  ),
+                  const SizedBox(height: 20),
+                  TextFieldDecorated(
                     labelText: "E-mail",
+                    hintText: "What is your email address?",
                     controller: _emailController,
                   ),
                   const SizedBox(height: 20),
@@ -121,9 +131,10 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                       onPressed: () {
                         BlocProvider.of<AuthBloc>(context).add(
                           AuthRegisterUserEvent(
-                            _emailController.text,
-                            _passwordController.text,
-                            _clientType,
+                            fullname: _fullNameController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            profileType: _clientType,
                           ),
                         );
                       },
