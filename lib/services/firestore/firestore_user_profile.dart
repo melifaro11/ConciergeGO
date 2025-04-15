@@ -3,7 +3,6 @@ import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/services/firestore/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 /// Service to access settings in firestore
 class UserProfileFirestoreService extends FirestoreService {
   /// Create service
@@ -40,25 +39,23 @@ class UserProfileFirestoreService extends FirestoreService {
     final User user = getLoggedUser();
 
     try {
-      return firestore
-          .collection('users')
-          .doc(user.uid)
-          .snapshots()
-          .map((snapshot) {
-            if (snapshot.data() != null) {
-              return UserProfileModel.fromJson(snapshot.id, snapshot.data()!);
-            } else {
-              return UserProfileModel(
-                id: null,
-                avatar: null,
-                openaiKey: "",
-                darkTheme: true,
-                profileType: 0,
-                baseInfo: UserBaseInfoModel(),
-                preferences: UserPreferencesModel(),
-              );
-            }
-          });
+      return firestore.collection('users').doc(user.uid).snapshots().map((
+        snapshot,
+      ) {
+        if (snapshot.data() != null) {
+          return UserProfileModel.fromJson(snapshot.id, snapshot.data()!);
+        } else {
+          return UserProfileModel(
+            id: null,
+            avatar: null,
+            openaiKey: "",
+            darkTheme: true,
+            profileType: 0,
+            baseInfo: UserBaseInfoModel(),
+            preferences: UserPreferencesModel(),
+          );
+        }
+      });
     } on Exception catch (e) {
       throw FirestoreServiceException(
         "Get settings stream exception: ${e.toString()}",
@@ -81,9 +78,7 @@ class UserProfileFirestoreService extends FirestoreService {
   Future<void> updateUserProfile(UserProfileModel userProfile) {
     final User user = getLoggedUser();
 
-    final userProfileRef = firestore
-        .collection('users')
-        .doc(user.uid);
+    final userProfileRef = firestore.collection('users').doc(user.uid);
 
     if (userProfile.id == null) {
       return userProfileRef.set(userProfile.toJson());

@@ -76,7 +76,7 @@ class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
             " include a general description of the task and individual points"
             " with detailed information about what needs to be done."
             " Send only the ad text in the response. User profile:\n$requestStr",
-        temperature: 0.3,
+        temperature: 0.2,
       );
 
       emitter(UserRequestConfirmState(request: result.content));

@@ -32,6 +32,8 @@ class _RequestPageState extends State<RequestPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userRequestBloc = BlocProvider.of<UserRequestBloc>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("ConciergeGO"),
@@ -56,7 +58,7 @@ class _RequestPageState extends State<RequestPage> {
             );
 
             if (result != null) {
-              BlocProvider.of<UserRequestBloc>(context).add(
+              userRequestBloc.add(
                 UserRequestQuestionDoneEvent(
                   request: requestState.request,
                   userProfile: widget.userProfileState.userProfile,
