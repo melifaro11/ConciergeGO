@@ -70,9 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             avatar: null,
             darkTheme: true,
             profileType: event.profileType,
-            baseInfo: UserBaseInfoModel(
-              fullName: event.fullname,
-            ),
+            openaiKey: "",
+            baseInfo: UserBaseInfoModel(fullName: event.fullname),
             preferences: UserPreferencesModel(),
           ),
         );

@@ -11,6 +11,8 @@ class UserProfileModel {
 
   final int profileType;
 
+  final String openaiKey;
+
   final UserBaseInfoModel baseInfo;
 
   final UserPreferencesModel preferences;
@@ -20,6 +22,7 @@ class UserProfileModel {
     required this.avatar,
     required this.darkTheme,
     required this.profileType,
+    required this.openaiKey,
     required this.baseInfo,
     required this.preferences,
   });
@@ -38,6 +41,7 @@ class UserProfileModel {
       avatar: avatar ?? this.avatar,
       darkTheme: darkTheme ?? this.darkTheme,
       profileType: profileType ?? this.profileType,
+      openaiKey: openaiKey ?? this.openaiKey,
       baseInfo: baseInfo ?? this.baseInfo,
       preferences: preferences ?? this.preferences,
     );
@@ -49,6 +53,7 @@ class UserProfileModel {
       avatar: json['avatar'] != null ? base64Decode(json['avatar']) : null,
       darkTheme: json['darkTheme'] ?? true,
       profileType: json['profileType'] ?? 0,
+      openaiKey: json['openaiKey'] ?? "",
       baseInfo: UserBaseInfoModel.fromJson(json),
       preferences: UserPreferencesModel.fromJson(json),
     );
@@ -59,6 +64,7 @@ class UserProfileModel {
         'avatar': avatar != null ? base64Encode(avatar!.toList()) : null,
         'darkTheme': darkTheme,
         'profileType': profileType,
+        'openaiKey': openaiKey,
       }
       ..addAll(baseInfo.toJson())
       ..addAll(preferences.toJson());

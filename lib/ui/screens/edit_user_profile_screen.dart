@@ -26,16 +26,17 @@ class UserProfileEditScreen extends StatefulWidget {
 class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
   Uint8List? _avatar;
 
-  final TextEditingController _nameController = TextEditingController();
+  final _nameController = TextEditingController();
 
-  final TextEditingController _nickNameController = TextEditingController();
+  final _nickNameController = TextEditingController();
 
-  final TextEditingController _phoneNumberController = TextEditingController();
+  final _phoneNumberController = TextEditingController();
 
-  final TextEditingController _communicationMethodController =
-      TextEditingController();
+  final _openaiKey = TextEditingController();
 
-  final TextEditingController _nationalityController = TextEditingController();
+  final _communicationMethodController = TextEditingController();
+
+  final _nationalityController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +67,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
 
           _nickNameController.text = userProfile.baseInfo.nickName ?? "";
           _phoneNumberController.text = userProfile.baseInfo.phoneNumber ?? "";
+          _openaiKey.text = userProfile.openaiKey;
           _communicationMethodController.text =
               userProfile.baseInfo.communicationMethod ?? "";
           _nationalityController.text = userProfile.baseInfo.nationality ?? "";
@@ -176,6 +178,17 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
+                    TextField(
+                      controller: _openaiKey,
+                      decoration: InputDecoration(
+                        labelText: "API Key",
+                        hintText: "OpenAI API Key",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -208,6 +221,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                               BlocProvider.of<UserProfileBloc>(context).add(
                                 UserProfileUpdateEvent(
                                   userProfile.copyWith(
+                                    openaiKey: _openaiKey.text,
                                     baseInfo: userProfile.baseInfo.copyWith(
                                       fullName: _nameController.text,
                                       nickName: _nickNameController.text,
