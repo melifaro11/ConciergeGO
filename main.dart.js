@@ -8193,7 +8193,8 @@ this.a=b},
 Wq:function Wq(a){this.d=a
 this.c=this.a=null},
 asu:function asu(a){this.a=a},
-asw:function asw(a){this.a=a},
+asw:function asw(a,b){this.a=a
+this.b=b},
 asv:function asv(a){this.a=a},
 asr:function asr(a){this.a=a},
 ass:function ass(a,b,c){this.a=a
@@ -42290,7 +42291,7 @@ q=3
 j=$.ax9()
 i=A.b([new A.lc(n,"user")],t.LH)
 s=6
-return A.L(j.ue(" Build an ad text to complete a task based on the user's request, their profile, and additional information. The ad should include a general description of the task and individual points with detailed information about what needs to be done. Send only the ad text in the response. User profile:\n"+A.j(n),i,"gpt-4",0.3),$async$y9)
+return A.L(j.ue(" Build an ad text to complete a task based on the user's request, their profile, and additional information. The ad should include a general description of the task and individual points with detailed information about what needs to be done. Send only the ad text in the response. User profile:\n"+A.j(n),i,"gpt-4",0.2),$async$y9)
 case 6:m=d
 i=m.a
 if(!b.d)b.a.$1(new A.Ez(i))
@@ -42753,7 +42754,8 @@ a9(){return new A.Wq(new A.dr(B.aY,$.an()))}}
 A.Wq.prototype={
 l(){A.mj().$1("RequestPage.dispose()")
 this.aI()},
-M(a){return A.Pc(A.JN(A.b([new A.Ql(this.a.c.a.d,new A.asu(a),null)],t.p),!0,null,B.a_T),A.axx(new A.asv(this),new A.asw(this),t.x3,t.ce),B.MI)}}
+M(a){var s=t.x3,r=A.im(a,s)
+return A.Pc(A.JN(A.b([new A.Ql(this.a.c.a.d,new A.asu(a),null)],t.p),!0,null,B.a_T),A.axx(new A.asv(this),new A.asw(this,r),s,t.ce),B.MI)}}
 A.asu.prototype={
 $1(a){A.im(this.a,t.H8).C(0,new A.r6(a))},
 $S:12}
@@ -42767,7 +42769,7 @@ case 2:p=b.b
 s=4
 return A.L(A.awV(a,p),$async$$2)
 case 4:o=d
-if(o!=null)A.im(a,t.x3).C(0,new A.rl(b.a,q.a.a.c.a,p,o))
+if(o!=null)q.b.C(0,new A.rl(b.a,q.a.a.c.a,p,o))
 case 3:return A.D(null,r)}})
 return A.E($async$$2,r)},
 $S:350}
