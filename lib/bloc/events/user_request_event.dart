@@ -43,6 +43,12 @@ class UserRequestCompletedEvent extends UserRequestEvent {
   });
 }
 
-class UserRequestDoneEvent extends UserRequestEvent {}
+class UserRequestConfirmDoneEvent extends UserRequestEvent {
+  final String userUid;
+
+  final String request;
+
+  UserRequestConfirmDoneEvent({required this.userUid, required this.request});
+}
 
 class UserRequestCancelledEvent extends UserRequestEvent {}

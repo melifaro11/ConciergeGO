@@ -1,9 +1,7 @@
 import 'package:conciergego/bloc/auth_bloc.dart';
-import 'package:conciergego/bloc/events/user_profile_event.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/auth_state.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
-import 'package:conciergego/main.dart';
 import 'package:conciergego/services/openai_service.dart';
 import 'package:conciergego/ui/pages/loading_page.dart';
 import 'package:conciergego/ui/pages/request_page.dart';
@@ -24,11 +22,6 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     debugPrint('MainScreen.dispose()');
     super.dispose();
@@ -36,31 +29,33 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<AuthBloc>().stream.listen((event) {
-      if (event is! AuthLoggedState) {
-        navigatorKey.currentState!.pushReplacementNamed(LoginScreen.routeName);
-      }
-    });
-
-    return BlocBuilder<UserProfileBloc, UserProfileState>(
-      builder: (context, userProfileState) {
-        if (userProfileState is UserProfileInitialState) {
-          BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
-          return LoadingPage();
-        } else if (userProfileState is UserProfileLoadedState) {
-          if (userProfileState.userProfile.openaiKey.isNotEmpty) {
-            OpenAIService().init(userProfileState.userProfile.openaiKey);
-            debugPrint("OpenAI initialized");
-          } else {
-            navigatorKey.currentState!.pushNamed(
-              UserProfileEditScreen.routeName,
-            );
-          }
-          return RequestPage(userProfileState: userProfileState);
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is! AuthLoggedState) {
+          Navigator.pushReplacementNamed(context, LoginScreen.routeName);
         }
-
-        return Center(child: CircularProgressIndicator());
       },
+      child: BlocBuilder<UserProfileBloc, UserProfileState>(
+        builder: (context, userProfileState) {
+          if (userProfileState is UserProfileInitialState) {
+            return LoadingPage();
+          } else if (userProfileState is UserProfileLoadedState) {
+            if (userProfileState.userProfile.openaiKey.isNotEmpty) {
+              OpenAIService().init(userProfileState.userProfile.openaiKey);
+              debugPrint("OpenAI initialized");
+            } else {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(
+                  context,
+                ).pushNamed(UserProfileEditScreen.routeName);
+              });
+            }
+            return RequestPage(userProfileState: userProfileState);
+          }
+
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

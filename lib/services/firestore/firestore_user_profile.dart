@@ -1,6 +1,8 @@
+import 'package:conciergego/models/request_model.dart';
 import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/services/firestore/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 /// Service to access settings in firestore
 class UserProfileFirestoreService extends FirestoreService {
@@ -14,6 +16,25 @@ class UserProfileFirestoreService extends FirestoreService {
 
   UserProfileFirestoreService._internal();
 
+  /// Returns stream of an user requests
+  Stream<List<RequestModel>> getUserRequestsStream() {
+    final user = getLoggedUser();
+
+    try {
+      return firestore
+          .collection("requests")
+          .where('userUid', isEqualTo: user.uid)
+          .snapshots()
+          .map((snapshot) {
+            return snapshot.docs
+                .map((doc) => RequestModel.fromJson(doc.data()))
+                .toList();
+          });
+    } on Exception catch (e) {
+      throw FirestoreServiceException("Get request error: ${e.toString()}");
+    }
+  }
+
   /// Get assistant model stream
   Stream<UserProfileModel> getUserProfileStream() {
     final User user = getLoggedUser();
@@ -22,11 +43,10 @@ class UserProfileFirestoreService extends FirestoreService {
       return firestore
           .collection('users')
           .doc(user.uid)
-          .collection('profile')
-          .doc('profile')
           .snapshots()
           .map((snapshot) {
             if (snapshot.data() != null) {
+              debugPrint("USER ID: ${snapshot.id}");
               return UserProfileModel.fromJson(snapshot.id, snapshot.data()!);
             } else {
               return UserProfileModel(
@@ -51,9 +71,11 @@ class UserProfileFirestoreService extends FirestoreService {
     await firestore
         .collection('users')
         .doc(userProfile.id)
-        .collection('profile')
-        .doc('profile')
         .set(userProfile.toJson());
+  }
+
+  Future<void> publishRequest(RequestModel request) async {
+    await firestore.collection('requests').doc().set(request.toJson());
   }
 
   /// Update assistant model
@@ -62,9 +84,7 @@ class UserProfileFirestoreService extends FirestoreService {
 
     final userProfileRef = firestore
         .collection('users')
-        .doc(user.uid)
-        .collection('profile')
-        .doc('profile');
+        .doc(user.uid);
 
     if (userProfile.id == null) {
       return userProfileRef.set(userProfile.toJson());

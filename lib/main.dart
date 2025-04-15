@@ -4,6 +4,7 @@ import 'package:conciergego/bloc/auth_bloc.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/states/user_profile_state.dart';
 import 'package:conciergego/bloc/user_request_bloc.dart';
+import 'package:conciergego/bloc/user_request_list_bloc.dart';
 import 'package:conciergego/firebase_options.dart';
 import 'package:conciergego/ui/screens/main_screen.dart';
 import 'package:conciergego/ui/screens/login_screen.dart';
@@ -32,6 +33,9 @@ void main() async {
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
         BlocProvider<UserProfileBloc>(create: (context) => UserProfileBloc()),
         BlocProvider<UserRequestBloc>(create: (context) => UserRequestBloc()),
+        BlocProvider<UserRequestListBloc>(
+          create: (context) => UserRequestListBloc(),
+        ),
       ],
       child: const ConciergeGoApp(),
     ),

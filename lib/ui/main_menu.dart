@@ -21,12 +21,11 @@ class _MainMenuState extends State<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final UserProfileState userProfileState =
-        context.watch<UserProfileBloc>().state;
+    final UserProfileBloc userProfileBloc = context.watch<UserProfileBloc>();
 
-    if (userProfileState is UserProfileInitialState) {
-      BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
-    } else if (userProfileState is UserProfileLoadedState) {
+    final UserProfileState userProfileState = userProfileBloc.state;
+
+    if (userProfileState is UserProfileLoadedState) {
       _userProfile = userProfileState.userProfile;
     }
 
@@ -55,7 +54,7 @@ class _MainMenuState extends State<MainMenu> {
 
                 pickedFile?.readAsBytes().then((imageData) {
                   if (_userProfile != null) {
-                    context.read<UserProfileBloc>().add(
+                    userProfileBloc.add(
                       UserProfileUpdateEvent(
                         _userProfile!.copyWith(avatar: imageData),
                       ),
@@ -75,13 +74,15 @@ class _MainMenuState extends State<MainMenu> {
               ),
             ),
           ),
-          //const Divider(),
           if (userProfileState is UserProfileLoadedState)
             ListTile(
               title: const Text("My profile"),
               leading: const Icon(Icons.person),
               onTap: () {
-                Navigator.popAndPushNamed(context, UserProfileEditScreen.routeName);
+                Navigator.popAndPushNamed(
+                  context,
+                  UserProfileEditScreen.routeName,
+                );
               },
             ),
           ListTile(
