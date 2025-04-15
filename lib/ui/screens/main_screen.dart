@@ -39,7 +39,9 @@ class MainScreenState extends State<MainScreen> {
       child: BlocBuilder<UserProfileBloc, UserProfileState>(
         builder: (context, userProfileState) {
           if (userProfileState is UserProfileInitialState) {
-            BlocProvider.of<UserProfileBloc>(context).add(LoadUserProfileEvent());
+            BlocProvider.of<UserProfileBloc>(
+              context,
+            ).add(LoadUserProfileEvent());
             return LoadingPage();
           } else if (userProfileState is UserProfileLoadedState) {
             if (userProfileState.userProfile.openaiKey.isNotEmpty) {
