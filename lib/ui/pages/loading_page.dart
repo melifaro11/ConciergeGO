@@ -48,7 +48,7 @@ class _LoadingPageState extends State<LoadingPage>
                 return Opacity(
                   opacity: opacity.clamp(0.2, 0.8),
                   child: Text(
-                    "Connect to the server...",
+                    "Loading profile from server...",
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 );
