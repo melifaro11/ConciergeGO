@@ -5,13 +5,12 @@ import 'package:conciergego/bloc/states/user_request_state.dart';
 import 'package:conciergego/bloc/user_profile_bloc.dart';
 import 'package:conciergego/bloc/user_request_bloc.dart';
 import 'package:conciergego/ui/dialogs/questions_dialog.dart';
+import 'package:conciergego/ui/dialogs/request_confirm_dialog.dart';
 import 'package:conciergego/ui/dialogs/user_request_dialog.dart';
 import 'package:conciergego/ui/main_menu.dart';
 import 'package:conciergego/ui/widgets/elevated_icon_button.dart';
-import 'package:conciergego/ui/widgets/textfield_decorated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class RequestPage extends StatefulWidget {
   final UserProfileLoadedState userProfileState;
@@ -23,8 +22,6 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
-  final _requestController = TextEditingController();
-
   @override
   void dispose() {
     debugPrint("RequestPage.dispose()");
@@ -68,51 +65,24 @@ class _RequestPageState extends State<RequestPage> {
                 ),
               );
             }
+          } else if (requestState is UserRequestConfirmState) {
+            final result = await showRequestConfirmDialog(
+              context,
+              requestState.request,
+            );
+            if (result != null) {
+              debugPrint("Final result: $result");
+              userRequestBloc.add(
+                UserRequestConfirmDoneEvent(
+                  userUid: widget.userProfileState.userProfile.id!,
+                  request: result,
+                ),
+              );
+            }
           }
         },
         builder: (context, requestState) {
           final userRequestBloc = BlocProvider.of<UserRequestBloc>(context);
-
-          if (requestState is UserRequestConfirmState) {
-            _requestController.text = requestState.request;
-
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              child: Column(
-                children: [
-                  TextFieldDecorated(
-                    labelText: "Request",
-                    maxLines: 30,
-                    minLines: 2,
-                    controller: _requestController,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      ElevatedIconButton(
-                        onPressed: () {
-                          userRequestBloc.add(UserRequestCancelledEvent());
-                        },
-                        child: Text("Cancel"),
-                      ),
-                      const SizedBox(width: 15),
-                      ElevatedIconButton(
-                        onPressed: () {
-                          userRequestBloc.add(
-                            UserRequestConfirmDoneEvent(
-                              userUid: widget.userProfileState.userProfile.id!,
-                              request: requestState.request,
-                            ),
-                          );
-                        },
-                        child: Text("Publish request"),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }
 
           return Padding(
             padding: EdgeInsets.all(10),

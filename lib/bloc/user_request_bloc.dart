@@ -8,6 +8,7 @@ import 'package:conciergego/models/request_model.dart';
 import 'package:conciergego/models/user_profile_model.dart';
 import 'package:conciergego/services/firestore/firestore_user_profile.dart';
 import 'package:conciergego/services/openai_service.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
@@ -36,6 +37,8 @@ class UserRequestBloc extends Bloc<UserRequestEvent, UserRequestState> {
         userUid: event.userUid,
         request: event.request,
       );
+
+      debugPrint('Publish request: $request');
 
       UserProfileFirestoreService().publishRequest(request);
 
