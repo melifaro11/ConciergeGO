@@ -26,6 +26,8 @@ class TextFieldDecorated extends StatefulWidget {
 
   final Function(String)? onSubmitted;
 
+  final Function(String)? onChanged;
+
   const TextFieldDecorated({
     super.key,
     this.labelText,
@@ -40,6 +42,7 @@ class TextFieldDecorated extends StatefulWidget {
     this.minLines,
     this.suffixIcon,
     this.onSubmitted,
+    this.onChanged,
   });
 
   @override
@@ -64,6 +67,11 @@ class _TextFieldDecoratedState extends State<TextFieldDecorated> {
         onSubmitted: (text) {
           if (widget.onSubmitted != null) {
             widget.onSubmitted!(text);
+          }
+        },
+        onChanged: (text) {
+          if (widget.onChanged != null) {
+            widget.onChanged!(text);
           }
         },
         decoration: InputDecoration(

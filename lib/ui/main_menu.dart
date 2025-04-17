@@ -55,7 +55,7 @@ class _MainMenuState extends State<MainMenu> {
                 pickedFile?.readAsBytes().then((imageData) {
                   if (_userProfile != null) {
                     userProfileBloc.add(
-                      UserProfileUpdateEvent(
+                      UserProfileSaveEvent(
                         _userProfile!.copyWith(avatar: imageData),
                       ),
                     );

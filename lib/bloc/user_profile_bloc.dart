@@ -15,7 +15,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   UserProfileBloc() : super(UserProfileInitialState()) {
     on<LoadUserProfileEvent>(_onLoadUserProfileEvent);
     on<UserProfileStreamUpdateEvent>(_onUserProfileStreamUpdateEvent);
-    on<UserProfileUpdateEvent>(_onUserProfileUpdateEvent);
+    on<UserProfileSaveEvent>(_onUserProfileSaveEvent);
     on<ThemeChangeEvent>(_onThemeChangeEvent);
   }
 
@@ -23,7 +23,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     UserProfileStreamUpdateEvent event,
     Emitter<UserProfileState> emitter,
   ) async {
-    emitter(UserProfileLoadedState(userProfile: event.settings));
+    emitter(UserProfileLoadedState(userProfile: event.userProfile));
   }
 
   void _onThemeChangeEvent(
@@ -55,12 +55,12 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
     }
   }
 
-  void _onUserProfileUpdateEvent(
-    UserProfileUpdateEvent event,
+  void _onUserProfileSaveEvent(
+    UserProfileSaveEvent event,
     Emitter<UserProfileState> emitter,
   ) async {
     try {
-      _fireStore.updateUserProfile(event.settings);
+      _fireStore.updateUserProfile(event.userProfile);
     } on FirestoreServiceException catch (e) {
       emitter(UserProfileErrorState('Update settings error: $e'));
     }

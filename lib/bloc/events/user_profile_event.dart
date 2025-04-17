@@ -7,15 +7,15 @@ abstract class UserProfileEvent {}
 class LoadUserProfileEvent extends UserProfileEvent {}
 
 class UserProfileStreamUpdateEvent extends UserProfileEvent {
-  final UserProfileModel settings;
+  final UserProfileModel userProfile;
 
-  UserProfileStreamUpdateEvent(this.settings);
+  UserProfileStreamUpdateEvent(this.userProfile);
 }
 
-class UserProfileUpdateEvent extends UserProfileEvent {
-  final UserProfileModel settings;
+class UserProfileSaveEvent extends UserProfileEvent {
+  final UserProfileModel userProfile;
 
-  UserProfileUpdateEvent(this.settings);
+  UserProfileSaveEvent(this.userProfile);
 }
 
 class ThemeChangeEvent extends UserProfileEvent {
