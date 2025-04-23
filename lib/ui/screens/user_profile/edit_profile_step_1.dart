@@ -1,4 +1,5 @@
 import 'package:conciergego/ui/widgets/textfield_decorated.dart';
+import 'package:csc_picker_plus/csc_picker_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -12,7 +13,9 @@ class EditProfileStep1 extends StatefulWidget {
 
   final TextEditingController communicationMethodController;
 
-  final TextEditingController nationalityController;
+  final String nationality;
+
+  final Function(String) onNationalityChanged;
 
   const EditProfileStep1({
     super.key,
@@ -20,7 +23,8 @@ class EditProfileStep1 extends StatefulWidget {
     required this.phoneNumberController,
     required this.openaiKeyController,
     required this.communicationMethodController,
-    required this.nationalityController,
+    required this.nationality,
+    required this.onNationalityChanged,
   });
 
   @override
@@ -66,12 +70,22 @@ class _EditProfileStep1State extends State<EditProfileStep1> {
           ),
         ),
         const SizedBox(height: 20),
-        TextField(
-          controller: widget.nationalityController,
-          decoration: InputDecoration(
-            labelText: "Nationality",
-            hintText: "What is your nationality?",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+        SizedBox(
+          width: 400,
+          child: CSCPickerPlus(
+            countryStateLanguage: CountryStateLanguage.englishOrNative,
+            currentCountry: widget.nationality,
+            showStates: false,
+            showCities: false,
+            selectedItemStyle: Theme.of(context).textTheme.labelLarge,
+            dropdownDecoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
+              border: Border.all(color: Theme.of(context).dividerColor),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            onCountryChanged: (value) {
+              widget.onNationalityChanged(value);
+            },
           ),
         ),
         const SizedBox(height: 20),

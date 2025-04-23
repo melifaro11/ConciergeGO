@@ -38,8 +38,6 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
 
   final _communicationMethodController = TextEditingController();
 
-  final _nationalityController = TextEditingController();
-
   // Preferences
   final _travelerTypeController = TextEditingController();
 
@@ -64,6 +62,8 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
   final _travelCompanionController = TextEditingController();
 
   int _currentStep = 0;
+
+  String _nationality = "";
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
           _openaiKeyController.text = userProfile.openaiKey;
           _communicationMethodController.text =
               userProfile.baseInfo.communicationMethod ?? "";
-          _nationalityController.text = userProfile.baseInfo.nationality ?? "";
+          _nationality = userProfile.baseInfo.nationality ?? "";
 
           return Scaffold(
             appBar: AppBar(
@@ -179,7 +179,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                       phoneNumber: _phoneNumberController.text,
                                       communicationMethod:
                                           _communicationMethodController.text,
-                                      nationality: _nationalityController.text,
+                                      nationality: _nationality,
                                     ),
                                     preferences: userProfile.preferences.copyWith(
                                       travelerType:
@@ -242,9 +242,27 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                           openaiKeyController: _openaiKeyController,
                           nickNameController: _nickNameController,
                           phoneNumberController: _phoneNumberController,
-                          nationalityController: _nationalityController,
                           communicationMethodController:
                               _communicationMethodController,
+                          nationality: _nationality,
+                          onNationalityChanged: (value) {
+                            setState(() {
+                              BlocProvider.of<UserProfileBloc>(context).add(
+                                UserProfileSaveEvent(
+                                  userProfile.copyWith(
+                                    openaiKey: _openaiKeyController.text,
+                                    baseInfo: userProfile.baseInfo.copyWith(
+                                      nationality: value,
+                                      nickName: _nickNameController.text,
+                                      phoneNumber: _phoneNumberController.text,
+                                      communicationMethod:
+                                          _communicationMethodController.text,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                          },
                         ),
                       ),
                       Step(
