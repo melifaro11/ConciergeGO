@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 @immutable
 abstract class UserRequestListEvent {}
 
-class LoadRequestListEvent extends UserRequestListEvent {}
+class UserRequestListLoadEvent extends UserRequestListEvent {}
 
 class UserRequestListStreamUpdateEvent extends UserRequestListEvent {
   final List<RequestModel> requests;

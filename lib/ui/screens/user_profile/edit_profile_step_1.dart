@@ -11,7 +11,9 @@ class EditProfileStep1 extends StatefulWidget {
 
   final TextEditingController openaiKeyController;
 
-  final TextEditingController communicationMethodController;
+  final List<String> communicationMethods;
+
+  final Function(List<String>) onCommunicationMethodsChanged;
 
   final String nationality;
 
@@ -22,7 +24,8 @@ class EditProfileStep1 extends StatefulWidget {
     required this.nickNameController,
     required this.phoneNumberController,
     required this.openaiKeyController,
-    required this.communicationMethodController,
+    required this.communicationMethods,
+    required this.onCommunicationMethodsChanged,
     required this.nationality,
     required this.onNationalityChanged,
   });
@@ -60,16 +63,6 @@ class _EditProfileStep1State extends State<EditProfileStep1> {
           ),
         ),
         const SizedBox(height: 20),
-        TextField(
-          controller: widget.communicationMethodController,
-          decoration: InputDecoration(
-            labelText: "Communication",
-            hintText:
-                "What is your preferred method of communication? (Email, WhatsApp, SMS, Other)",
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-          ),
-        ),
-        const SizedBox(height: 20),
         SizedBox(
           width: 400,
           child: CSCPickerPlus(
@@ -87,6 +80,39 @@ class _EditProfileStep1State extends State<EditProfileStep1> {
               widget.onNationalityChanged(value);
             },
           ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Text("Preferred communication methods"),
+            const SizedBox(width: 15),
+            Wrap(
+              spacing: 8,
+              children:
+                  ["phone", "sms", "email", "whatsapp/tg"].map((method) {
+                    final isSelected = widget.communicationMethods.contains(
+                      method,
+                    );
+                    return FilterChip(
+                      label: Text(method.toUpperCase()),
+                      selected: isSelected,
+                      onSelected: (sel) {
+                        if (sel) {
+                          widget.communicationMethods.add(method);
+                          debugPrint('Selected $method');
+                        } else {
+                          widget.communicationMethods.remove(method);
+                          debugPrint('Unselected $method');
+                        }
+
+                        widget.onCommunicationMethodsChanged(
+                          widget.communicationMethods,
+                        );
+                      },
+                    );
+                  }).toList(),
+            ),
+          ],
         ),
         const SizedBox(height: 20),
         TextField(

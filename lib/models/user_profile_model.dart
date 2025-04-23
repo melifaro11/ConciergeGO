@@ -78,7 +78,8 @@ class UserBaseInfoModel {
 
   final String? phoneNumber;
 
-  final String? communicationMethod;
+  //final String? communicationMethod;
+  final List<String>? communicationMethods;
 
   final List<String>? languages;
 
@@ -88,7 +89,8 @@ class UserBaseInfoModel {
     this.fullName,
     this.nickName,
     this.phoneNumber,
-    this.communicationMethod,
+    //this.communicationMethod,
+    this.communicationMethods,
     this.languages,
     this.nationality,
   });
@@ -97,7 +99,8 @@ class UserBaseInfoModel {
     String? fullName,
     String? nickName,
     String? phoneNumber,
-    String? communicationMethod,
+    //String? communicationMethod,
+    List<String>? communicationMethods,
     List<String>? languages,
     String? nationality,
   }) {
@@ -105,7 +108,7 @@ class UserBaseInfoModel {
       fullName: fullName ?? this.fullName,
       nickName: nickName ?? this.nickName,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      communicationMethod: communicationMethod ?? this.communicationMethod,
+      communicationMethods: communicationMethods ?? this.communicationMethods,
       languages: languages ?? this.languages,
       nationality: nationality ?? this.nationality,
     );
@@ -116,7 +119,12 @@ class UserBaseInfoModel {
       fullName: json['fullName'],
       nickName: json['nickName'],
       phoneNumber: json['phoneNumber'],
-      communicationMethod: json['communicationMethod'],
+      //communicationMethod: json['communicationMethod'],
+      communicationMethods:
+          (json['communicationMethods'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          <String>[],
       languages: json['languages'],
       nationality: json['nationality'],
     );
@@ -127,7 +135,8 @@ class UserBaseInfoModel {
       'fullName': fullName,
       'nickName': nickName,
       'phoneNumber': phoneNumber,
-      'communicationMethod': communicationMethod,
+      //'communicationMethod': communicationMethod,
+      'communicationMethods': communicationMethods,
       'languages': languages,
       'nationality': nationality,
     };

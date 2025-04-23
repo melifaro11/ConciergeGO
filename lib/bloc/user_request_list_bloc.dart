@@ -14,7 +14,7 @@ class UserRequestListBloc
   StreamSubscription<List<RequestModel>>? _requestsSubscription;
 
   UserRequestListBloc() : super(UserRequestListInitialState()) {
-    on<LoadRequestListEvent>(_onLoadRequestListEvent);
+    on<UserRequestListLoadEvent>(_onLoadRequestListEvent);
     on<UserRequestListStreamUpdateEvent>(_onUserRequestListStreamUpdateEvent);
   }
 
@@ -26,7 +26,7 @@ class UserRequestListBloc
   }
 
   void _onLoadRequestListEvent(
-    LoadRequestListEvent event,
+    UserRequestListLoadEvent event,
     Emitter<UserRequestListState> emitter,
   ) async {
     try {

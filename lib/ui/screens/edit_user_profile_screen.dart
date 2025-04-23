@@ -36,7 +36,7 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
 
   final _openaiKeyController = TextEditingController();
 
-  final _communicationMethodController = TextEditingController();
+  List<String> _communicationMethod = [];
 
   // Preferences
   final _travelerTypeController = TextEditingController();
@@ -95,8 +95,9 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
           _nickNameController.text = userProfile.baseInfo.nickName ?? "";
           _phoneNumberController.text = userProfile.baseInfo.phoneNumber ?? "";
           _openaiKeyController.text = userProfile.openaiKey;
-          _communicationMethodController.text =
-              userProfile.baseInfo.communicationMethod ?? "";
+          _communicationMethod = List.from(
+            userProfile.baseInfo.communicationMethods ?? [],
+          );
           _nationality = userProfile.baseInfo.nationality ?? "";
 
           return Scaffold(
@@ -177,8 +178,8 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                       fullName: _nameController.text,
                                       nickName: _nickNameController.text,
                                       phoneNumber: _phoneNumberController.text,
-                                      communicationMethod:
-                                          _communicationMethodController.text,
+                                      communicationMethods:
+                                          _communicationMethod,
                                       nationality: _nationality,
                                     ),
                                     preferences: userProfile.preferences.copyWith(
@@ -242,8 +243,22 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                           openaiKeyController: _openaiKeyController,
                           nickNameController: _nickNameController,
                           phoneNumberController: _phoneNumberController,
-                          communicationMethodController:
-                              _communicationMethodController,
+                          communicationMethods: _communicationMethod,
+                          onCommunicationMethodsChanged: (methods) {
+                            BlocProvider.of<UserProfileBloc>(context).add(
+                              UserProfileSaveEvent(
+                                userProfile.copyWith(
+                                  openaiKey: _openaiKeyController.text,
+                                  baseInfo: userProfile.baseInfo.copyWith(
+                                    nickName: _nickNameController.text,
+                                    phoneNumber: _phoneNumberController.text,
+                                    communicationMethods: methods,
+                                    nationality: _nationality,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                           nationality: _nationality,
                           onNationalityChanged: (value) {
                             setState(() {
@@ -255,8 +270,8 @@ class _UserProfileEditScreenState extends State<UserProfileEditScreen> {
                                       nationality: value,
                                       nickName: _nickNameController.text,
                                       phoneNumber: _phoneNumberController.text,
-                                      communicationMethod:
-                                          _communicationMethodController.text,
+                                      communicationMethods:
+                                          _communicationMethod,
                                     ),
                                   ),
                                 ),
