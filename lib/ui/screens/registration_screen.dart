@@ -27,6 +27,10 @@ class RegistrationScreenState extends State<RegistrationScreen> {
   /// Password input controller
   final TextEditingController _passwordController = TextEditingController();
 
+  /// Password repeat input controller
+  final TextEditingController _passwordRepeatController =
+      TextEditingController();
+
   int _clientType = 0;
 
   @override
@@ -97,6 +101,12 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
+                  TextFieldDecorated(
+                    labelText: "Repeat password",
+                    controller: _passwordRepeatController,
+                    obscureText: true,
+                  ),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -129,14 +139,25 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     height: 40,
                     child: ElevatedButton(
                       onPressed: () {
-                        BlocProvider.of<AuthBloc>(context).add(
-                          AuthRegisterUserEvent(
-                            fullname: _fullNameController.text,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            profileType: _clientType,
-                          ),
-                        );
+                        if (_passwordController.text !=
+                            _passwordRepeatController.text) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Registration error: passwords do not match!",
+                              ),
+                            ),
+                          );
+                        } else {
+                          BlocProvider.of<AuthBloc>(context).add(
+                            AuthRegisterUserEvent(
+                              fullname: _fullNameController.text,
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                              profileType: _clientType,
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(
